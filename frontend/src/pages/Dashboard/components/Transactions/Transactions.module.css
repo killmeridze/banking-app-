@@ -1,0 +1,54 @@
+.transactions {
+  background: var(--white);
+  border-radius: 1rem;
+  padding: 2rem;
+  height: 40rem;
+  overflow-y: auto;
+}
+
+.transactions_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sort_btn {
+  font-size: 1.3rem;
+  font-weight: 500;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.transaction_row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.transaction_type {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.transaction_date {
+  text-align: center;
+  color: #666;
+}
+
+.transaction_amount {
+  font-size: 1.7rem;
+  text-align: right;
+}
+
+.positive {
+  color: var(--color-primary);
+}
+
+.negative {
+  color: var(--color-tertiary);
+}

@@ -1,0 +1,61 @@
+.operations {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.operation {
+  border-radius: 1rem;
+  padding: 2rem 4rem;
+  color: var(--black);
+}
+
+.operation--transfer {
+  background-color: var(--color-secondary);
+  grid-column: 2 / span 2;
+}
+
+.operation--loan {
+  background-color: var(--color-primary);
+  grid-column: 2 / 2;
+}
+
+.operation--loan-summary {
+  background-image: var(--gradient-cancellation);
+  grid-column: 3 / 3;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.operation--close {
+  background-color: var(--color-tertiary-darker);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 2.5fr 2.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.4rem 1rem;
+}
+
+.form__input {
+  width: 100%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.4);
+  font-family: inherit;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  padding: 0.4rem 1.2rem;
+  border-radius: 0.7rem;
+  transition: all 0.3s;
+}
+
+.form__btn {
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1.8rem;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s;
+}

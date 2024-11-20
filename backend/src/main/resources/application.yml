@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: bankist
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+cors:
+  allowed-origins: "http://localhost:3000"
+  allowed-methods: "GET,POST,PUT,DELETE"
+  allowed-headers: "*"
+
+jwt:
+  secret: ${JWT_SECRET:default_secret}
+  expiration: ${JWT_EXPIRATION:86400000}

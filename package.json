@@ -1,0 +1,16 @@
+{
+  "name": "bankist",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "frontend": "cd frontend && npm start",
+    "backend": "cd backend && ./mvnw spring-boot:run",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}

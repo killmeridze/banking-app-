@@ -1,0 +1,33 @@
+.summary {
+  grid-row: 5 / 6;
+  display: flex;
+  align-items: center;
+  padding: 0 0.3rem;
+}
+
+.summary__label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-right: 0.8rem;
+}
+
+.summary__value {
+  font-size: 2.2rem;
+  margin-right: 2.5rem;
+}
+
+.summary__value--in {
+  color: var(--color-primary-darker);
+  white-space: nowrap;
+}
+
+.summary__value--out {
+  color: var(--color-tertiary-darker);
+  white-space: nowrap;
+}
+
+.summary__value--interest {
+  color: var(--color-secondary-darker);
+  white-space: nowrap;
+}

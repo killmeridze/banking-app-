@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+.dashboard_nav {
+  background-color: var(--white);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.nav_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo_container {
+  flex: 1;
+}
+
+.logo {
+  height: 50px;
+}
+
+.welcome {
+  flex: 1;
+  text-align: center;
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: 200;
+  font-family: "Montserrat", sans-serif;
+}
+
+.username {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.header_actions {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.nav_link {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--white);
+  background-color: var(--color-primary);
+  text-decoration: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-family: "Montserrat", sans-serif;
+}
+
+.nav_link:hover {
+  background-color: var(--color-primary-darker);
+  transform: translateY(-2px);
+}
+
+.nav_link:active {
+  transform: translateY(0);
+}
+
+.logout_btn {
+  background-color: var(--color-tertiary);
+}
+
+.logout_btn:hover {
+  background-color: var(--color-tertiary-darker);
+}

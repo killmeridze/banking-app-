@@ -1,0 +1,490 @@
+/* Breakpoints
+xs: 0-576px (phones)
+sm: 576px-768px (tablets)
+md: 768px-1024px (small laptops)
+lg: 1024px-1200px (laptops/desktops)
+xl: 1200px+ (large desktops)
+*/
+
+/* Base Styles */
+:root {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Large Screens */
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .header {
+    font-size: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .features {
+    margin: 0 12rem;
+  }
+}
+
+/* Medium Screens */
+@media screen and (max-width: 1024px) {
+  .nav {
+    padding: 1rem;
+  }
+  .nav__link--btn {
+    font-size: 1.3rem;
+  }
+  .features {
+    margin: 0 6rem;
+  }
+  nav {
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2rem;
+  }
+  .login__input {
+    width: 40rem;
+    padding: 3rem;
+  }
+  .login__input::placeholder {
+    font-size: 2rem;
+  }
+  .login__btn {
+    font-size: 4rem;
+  }
+  .app {
+    grid-template-columns: 50% 1fr;
+    width: 95%;
+  }
+  .movements__row {
+    justify-content: space-between;
+  }
+  .container {
+    width: 95%;
+    margin: 0 auto;
+  }
+  .header {
+    font-size: 1.5rem;
+  }
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .header__title {
+    margin-top: 12%;
+  }
+  .operations__tab {
+    font-size: 1.6rem;
+  }
+}
+
+/* Small Screens */
+@media screen and (max-width: 768px) {
+  header {
+    position: relative;
+  }
+  .header__title {
+    grid-template-columns: 1fr;
+  }
+  .features {
+    margin: 0 1rem;
+    gap: 1rem;
+    align-items: center;
+  }
+  .features__feature {
+    width: 100%;
+  }
+  .feature-one,
+  .feature-two,
+  .feature-three {
+    gap: 2rem;
+    align-items: center;
+  }
+  .operations__content {
+    padding: 2rem 4rem;
+  }
+  .testimonial {
+    width: 75%;
+  }
+  .cookie-message button {
+    font-size: 1.2rem;
+  }
+  .nav__links {
+    display: none;
+  }
+  .hamburger {
+    display: inline-block;
+    width: 5rem;
+    cursor: pointer;
+  }
+  .nav__links.active {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 10%;
+    left: 0;
+    right: 0;
+    background-color: #f3f3f3;
+    padding: 2rem;
+    z-index: 997;
+  }
+  .nav__links.active-sticky {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 80%;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    z-index: 997;
+  }
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+  .balance {
+    grid-column: 1 / span 1;
+  }
+  .container {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  .header {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .content {
+    padding: 1rem;
+  }
+  .form-container {
+    width: 90%;
+    max-width: none;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Extra Small Screens */
+@media screen and (max-width: 600px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+  .feature-one,
+  .feature-two,
+  .feature-three {
+    display: flex;
+  }
+  .feature-one,
+  .feature-three {
+    flex-direction: column;
+  }
+  .feature-two {
+    flex-direction: column-reverse;
+  }
+  .operations__tab-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .operations__tab {
+    margin: initial;
+  }
+  .operations__tab--active {
+    box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
+    -webkit-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
+    -moz-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
+  }
+  .slider {
+    display: none;
+  }
+  .cookie-message button,
+  .cookie-message {
+    font-size: 0.8rem;
+  }
+  .login__input {
+    width: 30rem;
+    padding: 3rem;
+  }
+  .app {
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: 90%;
+    margin: 0 auto;
+  }
+  .balance {
+    flex-direction: column;
+    align-items: center;
+  }
+  .summary {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .summary__label {
+    font-size: 2rem;
+  }
+  .btn--sort {
+    margin-left: initial;
+    font-size: 2rem;
+  }
+  .movements__row {
+    padding: 2rem;
+  }
+  .header {
+    font-size: 1rem;
+  }
+  .content {
+    padding: 0.5rem;
+  }
+}
+
+/* Extra Small Devices (phones) */
+@media screen and (max-width: 576px) {
+  :root {
+    font-size: 50%;
+  }
+
+  .header {
+    padding: 0 1rem;
+  }
+
+  .header__title {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .header__img {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .nav {
+    padding: 0.5rem;
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .features {
+    margin: 0 2rem;
+  }
+
+  .feature-one,
+  .feature-two,
+  .feature-three {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .operations__tab-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .operations__content {
+    padding: 2rem 1rem;
+  }
+
+  .slider {
+    height: 75rem;
+  }
+
+  .testimonial {
+    width: 90%;
+  }
+
+  .footer__nav {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Small Devices (tablets) */
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  :root {
+    font-size: 56.25%;
+  }
+
+  .header__title {
+    margin-top: 15%;
+  }
+
+  .features {
+    margin: 0 4rem;
+  }
+
+  .operations__content {
+    padding: 2.5rem 3rem;
+  }
+
+  .slider {
+    height: 65rem;
+  }
+}
+
+/* Medium Devices (small laptops) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .header__title {
+    margin-top: 12%;
+  }
+
+  .features {
+    margin: 0 6rem;
+  }
+
+  .operations__tab {
+    font-size: 1.6rem;
+  }
+}
+
+/* Large Devices (laptops/desktops) */
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .features {
+    margin: 0 8rem;
+  }
+}
+
+/* Additional Styles for Login and Dashboard Pages */
+@media screen and (max-width: 1024px) {
+  .login-nav {
+    flex-direction: column;
+    padding: 2rem;
+  }
+  .login__input {
+    width: 80%;
+    padding: 2rem;
+  }
+  .login__btn,
+  .login__btn1 {
+    font-size: 2.5rem;
+  }
+  .form-container {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  .tooltip .tooltiptext {
+    width: 100px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard_nav {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .card-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .app {
+    grid-template-columns: 1fr;
+  }
+  .balance {
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  .modal-content {
+    width: 80%;
+    margin: 20% auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login__input {
+    width: 100%;
+    padding: 1.5rem;
+  }
+  .login__btn,
+  .login__btn1 {
+    font-size: 2rem;
+  }
+  .form-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  .modal-content {
+    width: 90%;
+    margin: 25% auto;
+  }
+}
+
+/* Mac specific fixes */
+@media screen and (min-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  .form-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .login__input {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+}
+
+/* Navigation menu when active */
+.nav__links.active,
+.nav__links.active-sticky {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+/* Smooth transitions */
+.nav,
+.nav__links,
+.operations__tab,
+.operations__content {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Fix for iOS input zoom */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    font-size: 16px !important;
+  }
+}
