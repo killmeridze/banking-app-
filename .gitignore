@@ -41,6 +41,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Maven build directory
+backend/target/
+
 ### Logs ###
 /logs
 *.log

@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "frontend": "cd frontend && npm start",
-    "backend": "cd backend && ./mvnw spring-boot:run",
+    "backend": "cd backend && mvn clean compile spring-boot:run -Dspring-boot.run.jvmArguments=\"-Dserver.port=8080\"",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "devDependencies": {

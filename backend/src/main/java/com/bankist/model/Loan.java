@@ -41,4 +41,60 @@ public class Loan {
     public String toString() {
         return String.format("Loan{id=%d, amount=%.2f, interestRate=%.2f%%, issueDate=%s, dueDate=%s}", id, amount, interestRate, issueDate, dueDate);
     }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public Date getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(Date issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public List<LoanTransaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<LoanTransaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
