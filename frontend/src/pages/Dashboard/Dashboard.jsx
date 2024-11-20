@@ -6,6 +6,8 @@ import { CardsList } from "./components/Cards/CardsList";
 import { TransferModal } from "./components/Modals/TransferModal";
 import { LoanModal } from "./components/Modals/LoanModal";
 import { TransactionsList } from "./components/Transactions/TransactionsList";
+import { TabsNavigation } from "./components/Tabs/TabsNavigation";
+import { CardInfo } from "./components/CardInfo/CardInfo";
 import { useDashboard } from "./hooks/useDashboard";
 import { Summary } from "./components/Summary/Summary";
 import { useLogoutTimer } from "./hooks/useLogoutTimer";
@@ -17,6 +19,7 @@ export const Dashboard = () => {
   const [showLoanModal, setShowLoanModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isCentered, setIsCentered] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
   const {
     userData,
     loading,
@@ -76,41 +79,54 @@ export const Dashboard = () => {
         />
 
         {selectedCard && (
-          <>
-            <Summary
-              movements={selectedCard.transactions || []}
-              loans={userData?.loans || []}
-              currency={selectedCard.currency}
-            />
+          <div className={styles.tabs_container}>
+            <TabsNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
-            <div className={styles.actions_panel}>
-              <button
-                className={styles.action_btn}
-                onClick={() => setShowTransferModal(true)}
-              >
-                Перевести деньги
-              </button>
-              <button
-                className={styles.action_btn}
-                onClick={() => setShowLoanModal(true)}
-                disabled={selectedCard.cardType !== "CREDIT"}
-                title={
-                  selectedCard.cardType !== "CREDIT"
-                    ? "Только кредитные карты могут иметь кредиты."
-                    : "Запросить кредит"
-                }
-              >
-                Запросить кредит
-              </button>
+            <div className={styles.tab_content}>
+              {activeTab === "overview" && (
+                <div className={styles.overview_content}>
+                  <CardInfo card={selectedCard} />
+                  <Summary
+                    movements={selectedCard.transactions || []}
+                    loans={userData?.loans || []}
+                    currency={selectedCard.currency}
+                  />
+                </div>
+              )}
+
+              {activeTab === "actions" && (
+                <div className={styles.action_buttons}>
+                  <button
+                    className={styles.action_btn}
+                    onClick={() => setShowTransferModal(true)}
+                  >
+                    Перевести деньги
+                  </button>
+                  <button
+                    className={styles.action_btn}
+                    onClick={() => setShowLoanModal(true)}
+                    disabled={selectedCard.cardType !== "CREDIT"}
+                    title={
+                      selectedCard.cardType !== "CREDIT"
+                        ? "Только кредитные карты могут иметь кредиты."
+                        : "Запросить кредит"
+                    }
+                  >
+                    Запросить кредит
+                  </button>
+                </div>
+              )}
+
+              {activeTab === "transactions" && (
+                <TransactionsList
+                  transactions={selectedCard.transactions}
+                  currency={selectedCard.currency}
+                  sortOrder={sortOrder}
+                  onSort={handleSort}
+                />
+              )}
             </div>
-
-            <TransactionsList
-              transactions={selectedCard.transactions}
-              currency={selectedCard.currency}
-              sortOrder={sortOrder}
-              onSort={handleSort}
-            />
-          </>
+          </div>
         )}
       </motion.main>
 

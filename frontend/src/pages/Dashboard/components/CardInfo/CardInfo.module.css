@@ -1,0 +1,76 @@
+.card_info {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  height: 3rem;
+}
+
+.balance {
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.number_container {
+  font-size: 2rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.number_container:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.copied_tooltip {
+  position: absolute;
+  bottom: -3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.security_info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.expiry {
+  font-size: 1.6rem;
+}
+
+.cvv_container {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
+
+.cvv_container:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cvv_label {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  margin-right: 0.5rem;
+}

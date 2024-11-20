@@ -59,7 +59,7 @@ yarn-error.log*
 .env.production.local
 
 ### Sensitive Data ###
-src/main/resources/application-dev.yml
+backend/src/main/resources/application-dev.yml
 .env
 
 ### OS ###

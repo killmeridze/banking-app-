@@ -152,3 +152,10 @@
   align-items: center;
   margin-top: calc(20vh - 2rem);
 }
+
+.overview_content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 2rem;
+}

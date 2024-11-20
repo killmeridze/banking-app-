@@ -53,7 +53,6 @@ export const LoanModal = ({
           </button>
         </form>
 
-        {/* Список активных кредитов */}
         <div className={styles.loans_list}>
           <h3>Активные кредиты</h3>
           {loans.map((loan) => (

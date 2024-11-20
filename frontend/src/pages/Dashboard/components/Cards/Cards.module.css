@@ -103,6 +103,12 @@
   font-size: 1.8rem;
   letter-spacing: 2px;
   margin-bottom: 1rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+.card_number span {
+  font-size: 2rem;
+  letter-spacing: 4px;
 }
 
 .card_balance {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./Cards.module.css";
-import { formatCurrency } from "../../utils/formatters";
+import { formatCurrency, maskCardNumber } from "../../utils/formatters";
 import { AddCardForm } from "../../components/Forms/AddCardForm";
 import { Modal } from "../../components/Modals/Modal";
 
@@ -60,7 +60,7 @@ export const CardsList = ({
                   onClick={() => handleCardClick(card)}
                 >
                   <div className={styles.card_number}>
-                    {card.cardNumber.replace(/(\d{4})/g, "$1 ")}
+                    {maskCardNumber(card.cardNumber)}
                   </div>
                   <div className={styles.card_balance}>
                     {formatCurrency(card.balance, card.currency)}

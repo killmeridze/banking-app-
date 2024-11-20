@@ -1,5 +1,5 @@
 import styles from "./Cards.module.css";
-import { formatCurrency } from "../../utils/formatters";
+import { formatCurrency, maskCardNumber } from "../../utils/formatters";
 
 export const CardDetails = ({ card }) => {
   if (!card) return null;
@@ -10,7 +10,7 @@ export const CardDetails = ({ card }) => {
       <div className={styles.card_info_grid}>
         <div className={styles.info_item}>
           <span>Номер карты</span>
-          <p>{card.number.replace(/(\d{4})/g, "$1 ")}</p>
+          <p>{maskCardNumber(card.number)}</p>
         </div>
         <div className={styles.info_item}>
           <span>Баланс</span>
