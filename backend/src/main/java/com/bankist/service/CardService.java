@@ -33,6 +33,8 @@ public class CardService {
         card.setBalance(0.0);
         card.setCurrency(currency);
         card.setCardType(cardType);
+        card.setIban(generateIban());
+        card.setRnokpp(generateRnokpp());
         return cardRepository.save(card);
     }
 
@@ -54,6 +56,28 @@ public class CardService {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 5);
         return calendar.getTime();
+    }
+
+    private String generateIban() {
+        String countryCode = "UA";
+        String bankCode = "351457";
+        String accountNumber = String.format("%019d", new Random().nextInt(1000000000));
+        String checkDigits = "29";
+        return countryCode + checkDigits + bankCode + accountNumber;
+    }
+
+    private String generateRnokpp() {
+        StringBuilder rnokpp = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 8; i++) {
+            rnokpp.append(random.nextInt(10));
+        }
+
+        rnokpp.append(random.nextInt(10));
+        rnokpp.append(random.nextInt(10));
+
+        return rnokpp.toString();
     }
 
     public Card getCardByNumber(String cardNumber) {

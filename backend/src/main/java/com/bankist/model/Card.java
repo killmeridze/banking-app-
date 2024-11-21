@@ -31,6 +31,12 @@ public class Card {
     @Column(nullable = false)
     private int cvv;
 
+    @Column(unique = true)
+    private String iban;
+
+    @Column(unique = true)
+    private String rnokpp;
+
     @Column(nullable = false)
     private String pin;
 
@@ -113,4 +119,19 @@ public class Card {
         this.user = user;
     }
 
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public String getRnokpp() {
+        return rnokpp;
+    }
+
+    public void setRnokpp(String rnokpp) {
+        this.rnokpp = rnokpp;
+    }
 }

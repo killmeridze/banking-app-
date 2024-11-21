@@ -85,7 +85,7 @@ export const Dashboard = () => {
             <div className={styles.tab_content}>
               {activeTab === "overview" && (
                 <div className={styles.overview_content}>
-                  <CardInfo card={selectedCard} />
+                  <CardInfo card={selectedCard} user={userData} />
                   <Summary
                     movements={selectedCard.transactions || []}
                     loans={userData?.loans || []}

@@ -14,17 +14,20 @@
   max-width: 1200px;
   margin: 2rem auto;
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   justify-content: center;
+  align-items: center;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  padding: 1.5rem;
+  padding: 1.5rem 0;
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .tab_btn {
+  min-width: 120px; /* Добавляем фиксированную минимальную ширину */
+  text-align: center; /* Центрируем текст внутри кнопок */
   padding: 1rem 2rem;
   font-size: 1.6rem;
   border: none;
