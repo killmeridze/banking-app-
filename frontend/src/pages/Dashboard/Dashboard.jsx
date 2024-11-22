@@ -11,9 +11,11 @@ import { CardInfo } from "./components/CardInfo/CardInfo";
 import { useDashboard } from "./hooks/useDashboard";
 import { Summary } from "./components/Summary/Summary";
 import { useLogoutTimer } from "./hooks/useLogoutTimer";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {
+  usePageTitle("Личный кабинет");
   const navigate = useNavigate();
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showLoanModal, setShowLoanModal] = useState(false);

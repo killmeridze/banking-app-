@@ -3,10 +3,12 @@ import { useLogin } from "./hooks/useLogin";
 import { Link } from "react-router-dom";
 import { animated } from "@react-spring/web";
 import { useLoginAnimations } from "./hooks/useLoginAnimations";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import logo from "../../assets/img/logo.png";
 import "./Login.css";
 
-const Login = () => {
+export const Login = () => {
+  usePageTitle("Вход");
   const { credentials, errors, isLoading, handleChange, handleSubmit } =
     useLogin();
   const {
