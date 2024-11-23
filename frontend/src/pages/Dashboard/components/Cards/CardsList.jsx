@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import styles from "./Cards.module.css";
-import { formatCurrency, maskCardNumber } from "../../utils/formatters";
+import {
+  formatCurrency,
+  maskCardNumber,
+  formatCardType,
+} from "../../utils/formatters";
 import { AddCardForm } from "../../components/Forms/AddCardForm";
 import { Modal } from "../../components/Modals/Modal";
 
@@ -69,7 +73,9 @@ export const CardsList = ({
                     Действительна до:{" "}
                     {new Date(card.expirationDate).toLocaleDateString()}
                   </div>
-                  <div className={styles.card_type}>Тип: {card.cardType}</div>
+                  <div className={styles.card_type}>
+                    {formatCardType(card.cardType)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -100,7 +106,9 @@ export const CardsList = ({
                     Действительна до:{" "}
                     {new Date(card.expirationDate).toLocaleDateString()}
                   </div>
-                  <div className={styles.card_type}>Тип: {card.cardType}</div>
+                  <div className={styles.card_type}>
+                    {formatCardType(card.cardType)}
+                  </div>
                 </div>
               ))}
             </div>

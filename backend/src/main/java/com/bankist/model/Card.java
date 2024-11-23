@@ -2,12 +2,10 @@ package com.bankist.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
 
 @Entity
-@Data
 @Table(name = "cards")
 public class Card {
     @Id

@@ -24,4 +24,6 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  z-index: 1001;
+  position: relative;
 }

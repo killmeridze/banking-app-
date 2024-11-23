@@ -48,8 +48,13 @@ export const useDashboard = () => {
 
   const handleLoanRequest = async (amount) => {
     try {
-      await api.users.requestLoan(selectedCard.id, amount);
-      fetchUserData();
+      const userId = sessionStorage.getItem("currentUserId");
+      if (!userId || !selectedCard) {
+        throw new Error("Missing user or card data");
+      }
+
+      await api.loans.request(userId, selectedCard.id, amount);
+      await fetchUserData();
     } catch (error) {
       alert(errorHandler.handleApiError(error));
     }

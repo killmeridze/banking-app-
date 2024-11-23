@@ -1,15 +1,10 @@
 package com.bankist.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Data
 @Table(name = "loans")
 public class Loan {
     @Id
@@ -18,7 +13,6 @@ public class Loan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
     private User user;
 
     @Column(nullable = false)
@@ -33,13 +27,23 @@ public class Loan {
     @Column(nullable = false)
     private Date dueDate;
 
-    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<LoanTransaction> transactions;
+    @Column(nullable = false)
+    private boolean isActive;
 
-    @Override
-    public String toString() {
-        return String.format("Loan{id=%d, amount=%.2f, interestRate=%.2f%%, issueDate=%s, dueDate=%s}", id, amount, interestRate, issueDate, dueDate);
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public double getAmount() {
@@ -74,27 +78,11 @@ public class Loan {
         this.dueDate = dueDate;
     }
 
-    public List<LoanTransaction> getTransactions() {
-        return transactions;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setTransactions(List<LoanTransaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

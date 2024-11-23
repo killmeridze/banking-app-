@@ -1,13 +1,10 @@
 package com.bankist.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.Date;
 
 @Entity
-@Data
 @Table(name = "transactions")
 public class Transaction {
     @Id
@@ -16,12 +13,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
     private User user;
-
-    @ManyToOne(optional=false)
-    @JoinColumn(name="card_id")
-    private Card card;
 
     @Column(nullable = false)
     private double amount;
@@ -32,6 +24,26 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType transactionType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loan_id")
+    private Loan loan;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public double getAmount() {
         return amount;
@@ -57,11 +69,11 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Loan getLoan() {
+        return loan;
     }
 
-    public User getUser() {
-        return user;
+    public void setLoan(Loan loan) {
+        this.loan = loan;
     }
 }

@@ -14,7 +14,6 @@ export const Modal = ({ children, isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
         >
           <motion.div
             className={styles.modal_content}

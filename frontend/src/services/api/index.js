@@ -85,6 +85,25 @@ class ApiService {
         }),
       }),
   };
+
+  loans = {
+    request: (userId, cardId, amount) =>
+      this.request(ENDPOINTS.LOANS.REQUEST, {
+        method: "POST",
+        body: JSON.stringify({
+          userId,
+          cardId,
+          amount,
+        }),
+      }),
+    repay: (loanId, amount) =>
+      this.request(ENDPOINTS.LOANS.REPAY(loanId), {
+        method: "POST",
+        body: JSON.stringify({ amount }),
+      }),
+    getUserLoans: (userId) => this.request(ENDPOINTS.LOANS.USER(userId)),
+    getDetails: (loanId) => this.request(ENDPOINTS.LOANS.DETAILS(loanId)),
+  };
 }
 
 export const api = new ApiService();

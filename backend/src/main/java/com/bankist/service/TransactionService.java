@@ -2,13 +2,10 @@ package com.bankist.service;
 
 import com.bankist.model.*;
 import com.bankist.repo.CardRepository;
-import com.bankist.repo.LoanTransactionRepository;
 import com.bankist.repo.TransactionRepository;
 import com.bankist.repo.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.bankist.annotations.LogService;
-import com.bankist.model.*;
-import com.bankist.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,53 +14,44 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@LogService // Custom annotation to enable logging for this service
+@LogService
 public class TransactionService {
 
     @Autowired
-    private TransactionRepository transactionRepository; // Injecting the TransactionRepository dependency
+    private TransactionRepository transactionRepository; 
     @Autowired
-    private UserRepository userRepository; // Injecting the UserRepository dependency
+    private UserRepository userRepository; 
     @Autowired
-    private CardRepository cardRepository; // Injecting the CardRepository dependency
+    private CardRepository cardRepository; 
     @Autowired
-    private LoanService loanService; // Injecting the LoanService dependency
-    @Autowired
-    private LoanTransactionRepository loanTransactionRepository; // Injecting the LoanTransactionRepository dependency
+    private LoanService loanService; 
     private Map<String, Double> currencyRates;
 
     public TransactionService() {
-        // Load currency rates from a JSON file
         loadCurrencyRates();
     }
 
     public List<Transaction> findAllTransactions() {
-        // Retrieve all transactions
         return transactionRepository.findAll();
     }
 
     public Optional<Transaction> findTransactionById(Long id) {
-        // Find a transaction by its ID
         return transactionRepository.findById(id);
     }
 
     public Transaction saveTransaction(Transaction transaction) {
-        // Save a transaction to the repository
         return transactionRepository.save(transaction);
     }
 
     public void deleteTransaction(Long id) {
-        // Delete a transaction by its ID
         transactionRepository.deleteById(id);
     }
 
     public List<Transaction> getTransactionsForUser(Long userId) {
-        // Retrieve transactions for a specific user
         return transactionRepository.findByUserId(userId);
     }
 
     private void loadCurrencyRates() {
-        // Load currency rates from a JSON file
         ObjectMapper mapper = new ObjectMapper();
         try {
             Map<String, Map<String, Double>> data = mapper.readValue(new File("src/main/resources/static/bankist/exchangeRates.json"), HashMap.class);
@@ -75,14 +63,12 @@ public class TransactionService {
     }
 
     public double convertAmount(double amount, String fromCurrency, String toCurrency) {
-        // Convert an amount from one currency to another
         double rateFrom = currencyRates.getOrDefault(fromCurrency, 1.0);
         double rateTo = currencyRates.getOrDefault(toCurrency, 1.0);
         return (amount * rateFrom) / rateTo;
     }
 
     public boolean transferMoney(Long fromUserId, Long toUserId, double amount) {
-        // Transfer money between two users
         User fromUser = userRepository.findById(fromUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         User toUser = userRepository.findById(toUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -123,7 +109,6 @@ public class TransactionService {
     }
 
     public boolean requestLoan(Long userId, double amount) {
-        // Request a loan for a user
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
             return false;
@@ -131,13 +116,14 @@ public class TransactionService {
 
         try {
             Loan loan = loanService.issueLoan(userOpt.get(), amount);
-
-            LoanTransaction transaction = new LoanTransaction();
-            transaction.setLoan(loan);
-            transaction.setAmount(loan.getAmount());
+            
+            Transaction transaction = new Transaction();
+            transaction.setUser(userOpt.get());
+            transaction.setAmount(amount);
             transaction.setTransactionDate(new Date());
-            transaction.setType(TransactionType.LOAN_ISSUE);
-            loanTransactionRepository.save(transaction);
+            transaction.setTransactionType(TransactionType.LOAN_ISSUE);
+            transaction.setLoan(loan);
+            transactionRepository.save(transaction);
 
             return true;
         } catch (IllegalArgumentException e) {

@@ -20,3 +20,14 @@ export const formatExpiryDate = (date) => {
 };
 
 export const maskCVV = (cvv) => "***";
+
+export const formatCardType = (type) => {
+  switch (type) {
+    case "CREDIT":
+      return "Кредитная карта";
+    case "DEBIT":
+      return "Дебетовая карта";
+    default:
+      return type;
+  }
+};

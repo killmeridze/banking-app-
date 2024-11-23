@@ -15,6 +15,12 @@ export const ENDPOINTS = {
     CREATE: `/cards/create`,
     DELETE: `/cards/delete`,
   },
+  LOANS: {
+    REQUEST: "/loans/request",
+    REPAY: (id) => `/loans/${id}/repay`,
+    USER: (id) => `/loans/user/${id}`,
+    DETAILS: (id) => `/loans/${id}`,
+  },
 };
 
 export const VALIDATION_PATTERNS = {

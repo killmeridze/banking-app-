@@ -10,6 +10,7 @@ import { TabsNavigation } from "./components/Tabs/TabsNavigation";
 import { CardInfo } from "./components/CardInfo/CardInfo";
 import { useDashboard } from "./hooks/useDashboard";
 import { Summary } from "./components/Summary/Summary";
+import { Modal } from "./components/Modals/Modal";
 import { useLogoutTimer } from "./hooks/useLogoutTimer";
 import styles from "./Dashboard.module.css";
 
@@ -131,21 +132,28 @@ export const Dashboard = () => {
       </motion.main>
 
       {showTransferModal && (
-        <TransferModal
-          card={selectedCard}
+        <Modal
+          isOpen={showTransferModal}
           onClose={() => setShowTransferModal(false)}
-          onTransfer={handleTransfer}
-        />
+        >
+          <TransferModal
+            card={selectedCard}
+            onClose={() => setShowTransferModal(false)}
+            onTransfer={handleTransfer}
+          />
+        </Modal>
       )}
 
       {showLoanModal && (
-        <LoanModal
-          card={selectedCard}
-          loans={userData?.loans}
-          onClose={() => setShowLoanModal(false)}
-          onLoanRequest={handleLoan}
-          onRepayLoan={handleLoanRepayment}
-        />
+        <Modal isOpen={showLoanModal} onClose={() => setShowLoanModal(false)}>
+          <LoanModal
+            card={selectedCard}
+            loans={userData?.loans}
+            onClose={() => setShowLoanModal(false)}
+            onLoanRequest={handleLoan}
+            onRepayLoan={handleLoanRepayment}
+          />
+        </Modal>
       )}
     </div>
   );

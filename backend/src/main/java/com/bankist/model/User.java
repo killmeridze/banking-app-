@@ -2,12 +2,10 @@ package com.bankist.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "users")
 public class User {
     @Id

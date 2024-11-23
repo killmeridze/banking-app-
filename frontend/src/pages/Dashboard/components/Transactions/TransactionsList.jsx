@@ -29,10 +29,12 @@ export const TransactionsList = ({ transactions = [], currency }) => {
         {sortedTransactions.map((tx) => (
           <div key={tx.id} className={styles.transaction_row}>
             <div className={styles.transaction_type}>
-              {tx.type === "DEPOSIT" && "↑ Пополнение"}
-              {tx.type === "WITHDRAWAL" && "↓ Списание"}
-              {tx.type === "TRANSFER" && "↔ Перевод"}
-              {tx.type === "LOAN" && "💰 Кредит"}
+              {tx.transactionType === "DEPOSIT" && "↑ Пополнение"}
+              {tx.transactionType === "WITHDRAWAL" && "↓ Списание"}
+              {tx.transactionType === "TRANSFER" && "↔ Перевод"}
+              {tx.transactionType === "LOAN_ISSUE" && "💰 Получение кредита"}
+              {tx.transactionType === "LOAN_REPAYMENT" &&
+                "💸 Погашение кредита"}
             </div>
             <div className={styles.transaction_date}>
               {new Date(tx.transactionDate).toLocaleDateString()}

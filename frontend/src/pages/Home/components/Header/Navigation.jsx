@@ -62,9 +62,9 @@ export const Navigation = ({ navRef, handleNavHover }) => {
         <li className="nav__item">
           <Link
             className="nav__link nav__link--btn btn--show-modal"
-            to="/register"
+            to="/login"
           >
-            Открыть счет
+            Войти
           </Link>
         </li>
       </ul>

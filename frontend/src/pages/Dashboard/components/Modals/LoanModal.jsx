@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./Modal.module.css";
+import styles from "./LoanModal.module.css";
 import { formatCurrency } from "../../utils/formatters";
 
 export const LoanModal = ({
@@ -26,33 +26,34 @@ export const LoanModal = ({
   };
 
   return (
-    <div className={styles.modal}>
-      <div className={styles.modal_content}>
-        <div className={styles.modal_header}>
-          <h2>Управление кредитами</h2>
-          <span className={styles.close} onClick={onClose}>
-            &times;
-          </span>
-        </div>
+    <>
+      <div className={styles.modal_header}>
+        <h2>Управление кредитами</h2>
+      </div>
 
-        {/* Форма запроса кредита */}
-        <form onSubmit={handleLoanRequest} className={styles.loan_form}>
-          <div className={styles.form_group}>
-            <label>Сумма кредита ({card.currency})</label>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Введите сумму"
-              min="0"
-              step="0.01"
-            />
-          </div>
+      <form onSubmit={handleLoanRequest} className={styles.loan_form}>
+        <div className={styles.form_group}>
+          <label>Сумма кредита ({card.currency})</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Введите сумму"
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div className={styles.button_group}>
           <button type="submit" className={styles.submit_btn}>
             Запросить кредит
           </button>
-        </form>
+          <button type="button" className={styles.cancel_btn} onClick={onClose}>
+            Закрыть
+          </button>
+        </div>
+      </form>
 
+      {loans.length > 0 && (
         <div className={styles.loans_list}>
           <h3>Активные кредиты</h3>
           {loans.map((loan) => (
@@ -76,7 +77,7 @@ export const LoanModal = ({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };

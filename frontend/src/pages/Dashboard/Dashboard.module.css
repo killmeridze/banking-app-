@@ -103,6 +103,7 @@
   font-size: 1.6rem;
   cursor: pointer;
   transition: all 0.3s;
+  font-family: "Montserrat", sans-serif;
 }
 
 .action_btn:hover {
@@ -112,6 +113,12 @@
 
 .action_btn:active {
   transform: translateY(0);
+}
+
+.action_btn[disabled] {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
 }
 
 .nav_link {
@@ -158,4 +165,11 @@
   flex-direction: column;
   gap: 2rem;
   padding: 0 2rem;
+}
+
+.action_buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2rem;
 }

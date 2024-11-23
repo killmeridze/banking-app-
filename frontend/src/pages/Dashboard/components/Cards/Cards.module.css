@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.3);
+  color: var(--white);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 1rem;
@@ -81,9 +82,9 @@
     var(--color-primary-light),
     var(--color-primary)
   );
+  color: var(--white);
   padding: 1rem;
   border-radius: 1rem;
-  color: var(--white);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   min-width: 300px;
@@ -104,6 +105,7 @@
   letter-spacing: 2px;
   margin-bottom: 1rem;
   font-family: "Montserrat", sans-serif;
+  color: var(--white);
 }
 
 .card_number span {
@@ -115,6 +117,7 @@
   font-size: 2.4rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: var(--white);
 }
 
 .card_expiry {

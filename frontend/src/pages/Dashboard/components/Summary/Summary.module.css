@@ -1,4 +1,3 @@
-/* Summary.module.css */
 .summary_container {
   width: 100%;
   max-width: 1200px;
@@ -12,6 +11,7 @@
   align-items: center;
   padding: 2rem 3rem;
   background: rgba(255, 255, 255, 0.3);
+  color: var(--color-text-primary);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 1rem;
@@ -25,17 +25,20 @@
 }
 
 .summary__label {
-  font-size: 1.4rem;
-  font-weight: 500;
-  text-transform: uppercase;
+  font-size: 1.6rem;
+  font-family: "Montserrat", sans-serif;
+  color: var(--black);
+  border-radius: 0.5rem;
+  color: var(--black);
   margin-bottom: 0.8rem;
-  color: var(--color-text-primary);
 }
 
 .summary__value {
   font-size: 2.4rem;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
+  color: var(--color-text-primary);
+  margin-top: 1.2rem;
 }
 
 .summary__value--in {

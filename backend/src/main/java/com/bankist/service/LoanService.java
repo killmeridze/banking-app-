@@ -15,22 +15,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@LogService // Custom annotation to enable logging for this service
+@LogService 
 public class LoanService {
 
     @Autowired
-    private LoanRepository loanRepository; // Injecting the LoanRepository dependency
+    private LoanRepository loanRepository; 
     @Autowired
-    private TransactionRepository transactionRepository; // Injecting the TransactionRepository dependency
+    private TransactionRepository transactionRepository; 
     @Autowired
-    private CardRepository cardRepository; // Injecting the CardRepository dependency
+    private CardRepository cardRepository; 
 
-    private static final double DEFAULT_INTEREST_RATE = 5.0; // Default interest rate for loans
+    private static final double DEFAULT_INTEREST_RATE = 5.0; 
+    private static final double MIN_LOAN_AMOUNT = 100.0;
+    private static final double MAX_LOAN_AMOUNT = 10000.0;
 
     public Loan issueLoan(User user, double amount) {
-        // Issue a new loan for a user with the specified amount
+        if (amount < MIN_LOAN_AMOUNT || amount > MAX_LOAN_AMOUNT) {
+            throw new IllegalArgumentException(
+                "Loan amount must be between " + MIN_LOAN_AMOUNT + " and " + MAX_LOAN_AMOUNT
+            );
+        }
+
         if (hasUnpaidLoans(user.getId())) {
-            throw new IllegalArgumentException("User has unpaid loans. Cannot issue a new loan.");
+            throw new IllegalArgumentException("User has unpaid loans");
         }
 
         Loan loan = new Loan();
@@ -39,6 +46,7 @@ public class LoanService {
         loan.setInterestRate(calculateInterestRate(amount));
         loan.setIssueDate(new Date());
         loan.setDueDate(calculateDueDate(amount));
+        loan.setActive(true);
 
         Card card = cardRepository.findFirstByUserId(user.getId());
         if (card != null) {
@@ -50,7 +58,6 @@ public class LoanService {
     }
 
     public boolean hasUnpaidLoans(Long userId) {
-        // Check if the user has any unpaid loans
         List<Loan> loans = loanRepository.findByUserId(userId);
         for (Loan loan : loans) {
             if (loan.getAmount() > 0) {
@@ -61,7 +68,6 @@ public class LoanService {
     }
 
     public double calculateInterestRate(double amount) {
-        // Calculate the interest rate based on the loan amount
         if (amount <= 1000) {
             return DEFAULT_INTEREST_RATE;
         } else if (amount <= 5000) {
@@ -72,7 +78,6 @@ public class LoanService {
     }
 
     public Date calculateDueDate(double amount) {
-        // Calculate the due date based on the loan amount
         Calendar calendar = Calendar.getInstance();
         if (amount <= 1000) {
             calendar.add(Calendar.MONTH, 12);
@@ -85,7 +90,6 @@ public class LoanService {
     }
 
     public void repayLoan(Long loanId, Double repaymentAmount) throws Exception {
-        // Repay a loan with the specified repayment amount
         Optional<Loan> loanOpt = loanRepository.findById(loanId);
         if (!loanOpt.isPresent()) {
             throw new Exception("Loan not found");
@@ -96,16 +100,15 @@ public class LoanService {
 
         Card card = cardRepository.findFirstByUserId(user.getId());
         if (card == null) {
-            throw new Exception("No card found for user.");
+            throw new Exception("No card found for user");
         }
 
         if (repaymentAmount > loan.getAmount()) {
-            throw new Exception("Repayment amount exceeds the remaining loan amount.");
+            throw new Exception("Repayment amount exceeds loan amount");
         }
 
-        double cardBalance = card.getBalance();
-        if (repaymentAmount > cardBalance) {
-            throw new Exception("Insufficient balance.");
+        if (repaymentAmount > card.getBalance()) {
+            throw new Exception("Insufficient balance");
         }
 
         Transaction transaction = new Transaction();
@@ -113,16 +116,24 @@ public class LoanService {
         transaction.setAmount(-repaymentAmount);
         transaction.setTransactionDate(new Date());
         transaction.setTransactionType(TransactionType.LOAN_REPAYMENT);
+        transaction.setLoan(loan);
         transactionRepository.save(transaction);
 
-        card.setBalance(cardBalance - repaymentAmount);
+        card.setBalance(card.getBalance() - repaymentAmount);
         cardRepository.save(card);
 
         loan.setAmount(loan.getAmount() - repaymentAmount);
         if (loan.getAmount() <= 0) {
-            loanRepository.delete(loan);
-        } else {
-            loanRepository.save(loan);
+            loan.setActive(false);
         }
+        loanRepository.save(loan);
+    }
+
+    public List<Loan> getLoansByUserId(Long userId) {
+        return loanRepository.findByUserId(userId);
+    }
+
+    public Optional<Loan> findLoanById(Long loanId) {
+        return loanRepository.findById(loanId);
     }
 }

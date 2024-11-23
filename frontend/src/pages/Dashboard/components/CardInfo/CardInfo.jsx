@@ -8,6 +8,7 @@ import {
 } from "../../utils/formatters";
 import mastercardLogo from "../../../../assets/img/mastercard-logo.svg";
 import { AccountDetailsModal } from "../Modals/AccountDetailsModal";
+import { Modal } from "../Modals/Modal";
 
 export const CardInfo = ({ card, user }) => {
   const [isNumberRevealed, setIsNumberRevealed] = useState(false);
@@ -55,7 +56,7 @@ export const CardInfo = ({ card, user }) => {
           className={styles.details_btn}
           onClick={() => setShowDetailsModal(true)}
         >
-          Подробные реквизиты
+          Подробности
         </button>
       </div>
 
@@ -128,14 +129,16 @@ export const CardInfo = ({ card, user }) => {
         </div>
       </div>
 
-      {showDetailsModal && (
+      <Modal
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+      >
         <AccountDetailsModal
-          isOpen={showDetailsModal}
-          onClose={() => setShowDetailsModal(false)}
           user={user}
           account={card}
+          onClose={() => setShowDetailsModal(false)}
         />
-      )}
+      </Modal>
     </div>
   );
 };
