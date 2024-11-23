@@ -4,11 +4,13 @@ import logo from "../../assets/img/logo.png";
 import { useRegister } from "./hooks/useRegister";
 import { animated } from "@react-spring/web";
 import { useRegisterAnimations } from "./hooks/useRegisterAnimations";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export const Register = () => {
   const { formData, handleChange, handleSubmit, formErrors, isLoading } =
     useRegister();
 
+  usePageTitle("Регистрация");
   const {
     containerSpring,
     logoSpring,

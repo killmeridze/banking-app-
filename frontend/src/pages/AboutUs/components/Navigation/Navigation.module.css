@@ -1,0 +1,51 @@
+/* frontend/src/pages/AboutUs/components/Navigation/Navigation.module.css */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 9rem;
+  width: 100%;
+  padding: 0 6rem;
+  z-index: 100;
+}
+
+.nav_logo {
+  height: 4.5rem;
+  transition: all 0.3s;
+}
+
+.logo_link:hover .nav_logo {
+  transform: scale(1.1);
+}
+
+.nav_links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 4rem;
+}
+
+.nav_link {
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s;
+}
+
+.nav_link:hover {
+  color: var(--color-primary);
+}
+
+.nav_link_btn {
+  padding: 0.8rem 2.5rem;
+  border-radius: 3rem;
+  background-color: var(--color-primary);
+  color: #222;
+}
+
+.nav_link_btn:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--black);
+}

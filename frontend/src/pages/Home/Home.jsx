@@ -7,6 +7,7 @@ import { useNavigation } from "./hooks/useNavigation";
 import { useSlider } from "./hooks/useSlider";
 import { useSectionObserver } from "./hooks/useSectionObserver";
 import { useImageLoader } from "./hooks/useImageLoader";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 // Component imports
 import { Header } from "./components/Header/Header";
@@ -25,6 +26,7 @@ export const Home = () => {
   const { nextSlide, prevSlide, handleDotClick } = useSlider();
 
   useSectionObserver();
+  usePageTitle("Ваш Цифровой Банк");
   useImageLoader();
 
   useEffect(() => {
