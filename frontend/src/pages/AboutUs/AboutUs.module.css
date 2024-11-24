@@ -35,3 +35,22 @@
   background: none !important;
   backdrop-filter: none !important;
 }
+
+.section {
+  opacity: 0;
+  transform: translateY(8rem);
+  padding: 15rem 3rem;
+  border-top: 1px solid #ddd;
+}
+
+.section--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.mission,
+.values,
+.team {
+  padding: 15rem 3rem;
+  border-top: 1px solid #ddd;
+}

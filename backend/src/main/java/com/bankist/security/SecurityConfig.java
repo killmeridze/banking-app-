@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/exists").permitAll()
                 .requestMatchers("/api/users/**").authenticated()
                 .requestMatchers("/api/loans/**").authenticated()
+                .requestMatchers("/api/transfers/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

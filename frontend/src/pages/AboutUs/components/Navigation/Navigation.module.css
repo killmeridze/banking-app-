@@ -1,4 +1,3 @@
-/* frontend/src/pages/AboutUs/components/Navigation/Navigation.module.css */
 .nav {
   display: flex;
   justify-content: space-between;
@@ -34,18 +33,15 @@
   transition: all 0.3s;
 }
 
-.nav_link:hover {
-  color: var(--color-primary);
-}
-
 .nav_link_btn {
   padding: 0.8rem 2.5rem;
-  border-radius: 3rem;
+  border-radius: 2rem;
   background-color: var(--color-primary);
   color: #222;
 }
 
 .nav_link_btn:hover {
+  color: inherit;
   background-color: var(--color-primary-darker);
   color: var(--black);
 }

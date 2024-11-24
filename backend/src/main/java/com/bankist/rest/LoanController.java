@@ -1,5 +1,9 @@
 package com.bankist.rest;
 
+import com.bankist.dto.LoanResponseDTO;
+import com.bankist.model.Card;
+import com.bankist.repo.CardRepository;
+import com.bankist.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,7 @@ import com.bankist.model.Loan;
 import com.bankist.model.User;
 import com.bankist.security.UserPrincipal;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,26 +25,35 @@ import java.util.Map;
 public class LoanController {
 
     @Autowired
-    private LoanService loanService; 
+    private LoanService loanService;
+    @Autowired
+    private CardRepository cardRepository;
+    @Autowired
+    private CurrencyService currencyService;
     @PostMapping("/request")
     public ResponseEntity<?> requestLoan(
             @RequestBody Map<String, Object> request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         try {
-            if (userPrincipal == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
-            }
-
-            double amount = Double.parseDouble(request.get("amount").toString());
-            User user = userPrincipal.getUser();
-            Loan loan = loanService.issueLoan(user, amount);
+            double amountInUSD = Double.parseDouble(request.get("amount").toString()); 
+            Long cardId = Long.parseLong(request.get("cardId").toString());
             
-            return ResponseEntity.ok(loan);
+            Card card = cardRepository.findById(cardId).orElseThrow();
+            
+            if (amountInUSD < 1000 || amountInUSD > 50000) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", String.format(
+                        "Сумма кредита в USD (%.2f) должна быть между 1000 и 50000", 
+                        amountInUSD)));
+            }
+            
+            User user = userPrincipal.getUser();
+            Loan loan = loanService.issueLoan(user, amountInUSD, cardId);
+            
+            return ResponseEntity.ok(LoanResponseDTO.fromLoan(loan));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error processing loan request: " + e.getMessage());
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", e.getMessage()));
         }
     }
 
@@ -48,9 +62,13 @@ public class LoanController {
         Double repaymentAmount = request.get("amount");
         try {
             loanService.repayLoan(loanId, repaymentAmount);
-            return ResponseEntity.ok().body("Loan repaid successfully");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Loan repaid successfully");
+            return ResponseEntity.ok().body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header/Header";
 import { CardsList } from "./components/Cards/CardsList";
 import { TransferModal } from "./components/Modals/TransferModal";
@@ -51,8 +51,14 @@ export const Dashboard = () => {
   useEffect(() => {
     if (userData?.cards?.length >= 1) {
       setIsCentered(!selectedCard);
+      setShowTransferModal(false);
+      setShowLoanModal(false);
     }
   }, [userData?.cards, selectedCard]);
+
+  useEffect(() => {
+    setActiveTab("overview");
+  }, [selectedCard?.id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -86,48 +92,58 @@ export const Dashboard = () => {
             <TabsNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
             <div className={styles.tab_content}>
-              {activeTab === "overview" && (
-                <div className={styles.overview_content}>
-                  <CardInfo card={selectedCard} user={userData} />
-                  <Summary
-                    movements={selectedCard.transactions || []}
-                    loans={userData?.loans || []}
-                    currency={selectedCard.currency}
-                  />
-                </div>
-              )}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {activeTab === "overview" && (
+                    <div className={styles.overview_content}>
+                      <CardInfo card={selectedCard} user={userData} />
+                      <Summary
+                        movements={selectedCard.transactions || []}
+                        loans={userData?.loans || []}
+                        currency={selectedCard.currency}
+                      />
+                    </div>
+                  )}
 
-              {activeTab === "actions" && (
-                <div className={styles.action_buttons}>
-                  <button
-                    className={styles.action_btn}
-                    onClick={() => setShowTransferModal(true)}
-                  >
-                    Перевести деньги
-                  </button>
-                  <button
-                    className={styles.action_btn}
-                    onClick={() => setShowLoanModal(true)}
-                    disabled={selectedCard.cardType !== "CREDIT"}
-                    title={
-                      selectedCard.cardType !== "CREDIT"
-                        ? "Только кредитные карты могут иметь кредиты."
-                        : "Запросить кредит"
-                    }
-                  >
-                    Запросить кредит
-                  </button>
-                </div>
-              )}
+                  {activeTab === "actions" && (
+                    <div className={styles.action_buttons}>
+                      <button
+                        className={styles.action_btn}
+                        onClick={() => setShowTransferModal(true)}
+                      >
+                        Перевести деньги
+                      </button>
+                      <button
+                        className={styles.action_btn}
+                        onClick={() => setShowLoanModal(true)}
+                        disabled={selectedCard.cardType !== "CREDIT"}
+                        title={
+                          selectedCard.cardType !== "CREDIT"
+                            ? "Только кредитные карты могут иметь кредиты."
+                            : "Запросить кредит"
+                        }
+                      >
+                        Запросить кредит
+                      </button>
+                    </div>
+                  )}
 
-              {activeTab === "transactions" && (
-                <TransactionsList
-                  transactions={selectedCard.transactions}
-                  currency={selectedCard.currency}
-                  sortOrder={sortOrder}
-                  onSort={handleSort}
-                />
-              )}
+                  {activeTab === "transactions" && (
+                    <TransactionsList
+                      transactions={selectedCard.transactions}
+                      currency={selectedCard.currency}
+                      sortOrder={sortOrder}
+                      onSort={handleSort}
+                    />
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         )}
@@ -146,11 +162,11 @@ export const Dashboard = () => {
         </Modal>
       )}
 
-      {showLoanModal && (
+      {showLoanModal && selectedCard && (
         <Modal isOpen={showLoanModal} onClose={() => setShowLoanModal(false)}>
           <LoanModal
             card={selectedCard}
-            loans={userData?.loans}
+            loans={userData?.loans || []}
             onClose={() => setShowLoanModal(false)}
             onLoanRequest={handleLoan}
             onRepayLoan={handleLoanRepayment}

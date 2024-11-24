@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./CardInfo.module.css";
 import {
@@ -11,38 +11,53 @@ import { AccountDetailsModal } from "../Modals/AccountDetailsModal";
 import { Modal } from "../Modals/Modal";
 
 export const CardInfo = ({ card, user }) => {
-  const [isNumberRevealed, setIsNumberRevealed] = useState(false);
-  const [isCvvRevealed, setIsCvvRevealed] = useState(false);
+  const [revealedStates, setRevealedStates] = useState({
+    [card.id]: {
+      numberRevealed: false,
+      cvvRevealed: false,
+    },
+  });
   const [showCopied, setShowCopied] = useState(false);
   const [showCopiedCvv, setShowCopiedCvv] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
+  useEffect(() => {
+    setRevealedStates((prev) => ({
+      ...prev,
+      [card.id]: prev[card.id] || { numberRevealed: false, cvvRevealed: false },
+    }));
+  }, [card.id]);
+
+  const isNumberRevealed = revealedStates[card.id]?.numberRevealed || false;
+  const isCvvRevealed = revealedStates[card.id]?.cvvRevealed || false;
+
   const handleNumberClick = async () => {
     if (!isNumberRevealed) {
-      setIsNumberRevealed(true);
+      setRevealedStates((prev) => ({
+        ...prev,
+        [card.id]: { ...prev[card.id], numberRevealed: true },
+      }));
+    } else {
+      const fullNumber = card.cardNumber
+        .replace(/\s/g, "")
+        .match(/.{1,4}/g)
+        .join(" ");
+      await navigator.clipboard.writeText(fullNumber);
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
     }
-
-    const fullNumber = card.cardNumber
-      .replace(/\s/g, "")
-      .match(/.{1,4}/g)
-      .join(" ");
-
-    await navigator.clipboard.writeText(fullNumber);
-    setShowCopied(true);
-    setTimeout(() => {
-      setShowCopied(false);
-    }, 2000);
   };
 
   const handleCvvClick = async () => {
     if (!isCvvRevealed) {
-      setIsCvvRevealed(true);
+      setRevealedStates((prev) => ({
+        ...prev,
+        [card.id]: { ...prev[card.id], cvvRevealed: true },
+      }));
     } else {
       await navigator.clipboard.writeText(card.cvv);
       setShowCopiedCvv(true);
-      setTimeout(() => {
-        setShowCopiedCvv(false);
-      }, 2000);
+      setTimeout(() => setShowCopiedCvv(false), 2000);
     }
   };
 

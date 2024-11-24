@@ -64,11 +64,6 @@ class ApiService {
       ),
     getProfile: (userId) =>
       this.request(`${ENDPOINTS.USERS.PROFILE}/${userId}`),
-    transfer: (data) =>
-      this.request(ENDPOINTS.USERS.TRANSFER, {
-        method: "POST",
-        body: JSON.stringify(data),
-      }),
     requestLoan: (userId, amount) =>
       this.request(`${ENDPOINTS.USERS.LOANS}/${userId}`, {
         method: "POST",
@@ -85,6 +80,19 @@ class ApiService {
         }),
       }),
   };
+
+  transfer = (transferData) =>
+    this.request(ENDPOINTS.TRANSFERS, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fromCardNumber: transferData.fromCardNumber,
+        toCardNumber: transferData.toCardNumber,
+        amount: Number(transferData.amount),
+      }),
+    });
 
   loans = {
     request: (userId, cardId, amount) =>
@@ -103,6 +111,12 @@ class ApiService {
       }),
     getUserLoans: (userId) => this.request(ENDPOINTS.LOANS.USER(userId)),
     getDetails: (loanId) => this.request(ENDPOINTS.LOANS.DETAILS(loanId)),
+  };
+
+  exchangeRates = {
+    getRates: () => this.request(ENDPOINTS.EXCHANGE_RATES.GET),
+    getConvertedAmount: (amount, from, to) =>
+      this.request(ENDPOINTS.EXCHANGE_RATES.CONVERT(amount, from, to)),
   };
 }
 

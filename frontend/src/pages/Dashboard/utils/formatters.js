@@ -1,8 +1,10 @@
+import { CURRENCY_SYMBOLS } from "../../../constants";
+
 export const formatCurrency = (value, currency = "USD") => {
   if (value === undefined || value === null) {
-    return "0.00 " + currency;
+    return `0.00 ${CURRENCY_SYMBOLS[currency] || currency}`;
   }
-  return value.toFixed(2) + " " + currency;
+  return `${value.toFixed(2)} ${CURRENCY_SYMBOLS[currency] || currency}`;
 };
 
 export const maskCardNumber = (cardNumber) => {

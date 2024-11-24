@@ -89,3 +89,18 @@
   background: var(--color-tertiary);
   color: var(--white);
 }
+
+.error_input {
+  border-color: var(--color-error) !important;
+}
+
+.error_message {
+  color: var(--color-error);
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+}

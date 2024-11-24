@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./AddCardForm.module.css";
-import { CURRENCY_OPTIONS } from "../../../../constants";
+import { CURRENCY_OPTIONS, CURRENCY_SYMBOLS } from "../../../../constants";
 
 export const AddCardForm = ({ onAddCard, onClose }) => {
   const [currency, setCurrency] = useState(CURRENCY_OPTIONS[0]);
@@ -35,7 +35,7 @@ export const AddCardForm = ({ onAddCard, onClose }) => {
           >
             {CURRENCY_OPTIONS.map((cur) => (
               <option key={cur} value={cur}>
-                {cur}
+                {cur} ({CURRENCY_SYMBOLS[cur]})
               </option>
             ))}
           </select>

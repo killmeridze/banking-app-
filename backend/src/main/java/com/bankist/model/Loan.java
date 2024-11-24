@@ -1,5 +1,6 @@
 package com.bankist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -13,10 +14,20 @@ public class Loan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"cards", "loans", "transactions", "hibernateLazyInitializer", "handler"})
     private User user;
 
     @Column(nullable = false)
     private double amount;
+
+    @Column(nullable = false)
+    private double interestAmount;
+
+    @Column(nullable = false)
+    private double paidAmount;
+
+    @Column(nullable = false)
+    private double totalAmount;
 
     @Column(nullable = false)
     private double interestRate;
@@ -29,6 +40,11 @@ public class Loan {
 
     @Column(nullable = false)
     private boolean isActive;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Card card;
 
     public Long getId() {
         return id;
@@ -84,5 +100,37 @@ public class Loan {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public double getInterestAmount() {
+        return interestAmount;
+    }
+
+    public void setInterestAmount(double interestAmount) {
+        this.interestAmount = interestAmount;
+    }
+
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

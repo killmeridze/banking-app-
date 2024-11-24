@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { animated } from "@react-spring/web";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { Navigation } from "./components/Navigation/Navigation";
@@ -12,8 +12,47 @@ import styles from "./AboutUs.module.css";
 
 export const AboutUs = () => {
   usePageTitle("О нас");
-  const { heroSpring, missionSpring, valuesSpring, teamSpring } =
-    useAboutAnimations();
+
+  const missionRef = useRef(null);
+  const valuesRef = useRef(null);
+  const teamRef = useRef(null);
+  const footerRef = useRef(null);
+
+  const {
+    heroSpring,
+    missionSpring,
+    valuesSpring,
+    teamSpring,
+    footerSpring,
+    setMissionVisible,
+    setValuesVisible,
+    setTeamVisible,
+    setFooterVisible,
+  } = useAboutAnimations();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === missionRef.current)
+            setMissionVisible(entry.isIntersecting);
+          if (entry.target === valuesRef.current)
+            setValuesVisible(entry.isIntersecting);
+          if (entry.target === teamRef.current)
+            setTeamVisible(entry.isIntersecting);
+          if (entry.target === footerRef.current)
+            setFooterVisible(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    [missionRef, valuesRef, teamRef, footerRef].forEach(
+      (ref) => ref.current && observer.observe(ref.current)
+    );
+
+    return () => observer.disconnect();
+  }, [setMissionVisible, setValuesVisible, setTeamVisible, setFooterVisible]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -26,18 +65,33 @@ export const AboutUs = () => {
         <Hero />
       </animated.div>
 
-      <animated.section style={missionSpring}>
+      <animated.section
+        ref={missionRef}
+        style={missionSpring}
+        className={`${styles.section} ${styles.mission}`}
+      >
         <Mission />
       </animated.section>
 
-      <animated.section style={valuesSpring}>
+      <animated.section
+        ref={valuesRef}
+        style={valuesSpring}
+        className={`${styles.section} ${styles.values}`}
+      >
         <Values />
       </animated.section>
 
-      <animated.section style={teamSpring}>
+      <animated.section
+        ref={teamRef}
+        style={teamSpring}
+        className={`${styles.section} ${styles.team}`}
+      >
         <Team />
       </animated.section>
-      <Footer />
+
+      <animated.footer ref={footerRef} style={footerSpring}>
+        <Footer />
+      </animated.footer>
     </div>
   );
 };

@@ -8,7 +8,6 @@ export const ENDPOINTS = {
   USERS: {
     EXISTS: "/users/exists",
     PROFILE: "/users",
-    TRANSFER: "/users/transfer",
     LOANS: "/users/requestLoan",
   },
   CARDS: {
@@ -21,6 +20,10 @@ export const ENDPOINTS = {
     USER: (id) => `/loans/user/${id}`,
     DETAILS: (id) => `/loans/${id}`,
   },
+  EXCHANGE_RATES: {
+    GET: `/exchange-rates`,
+  },
+  TRANSFERS: "/transfers",
 };
 
 export const VALIDATION_PATTERNS = {
@@ -44,7 +47,26 @@ export const VALIDATION_MESSAGES = {
   INVALID_PASSWORD: "Неправильный пароль",
 };
 
-export const CURRENCY_OPTIONS = ["USD", "EUR", "GBP", "UAH", "CNY", "JPY"];
+export const CURRENCY_OPTIONS = [
+  "USD",
+  "EUR",
+  "GBP",
+  "UAH",
+  "CNY",
+  "JPY",
+  "CHF",
+  "PLN",
+  "AUD",
+  "CAD",
+  "SGD",
+  "NZD",
+  "SEK",
+  "NOK",
+  "DKK",
+  "HKD",
+  "KRW",
+  "THB",
+];
 
 export const CURRENCY_SYMBOLS = {
   USD: "$",
@@ -53,4 +75,16 @@ export const CURRENCY_SYMBOLS = {
   UAH: "₴",
   CNY: "¥",
   JPY: "¥",
+  CHF: "₣",
+  PLN: "zł",
+  AUD: "A$",
+  CAD: "C$",
+  SGD: "S$",
+  NZD: "NZ$",
+  SEK: "kr",
+  NOK: "kr",
+  DKK: "kr",
+  HKD: "HK$",
+  KRW: "₩",
+  THB: "฿",
 };

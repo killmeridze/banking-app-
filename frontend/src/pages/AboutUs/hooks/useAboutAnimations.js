@@ -1,6 +1,13 @@
-import { useSpring, config } from "@react-spring/web";
+import { useState } from "react";
+import { useSpring } from "@react-spring/web";
+import { config } from "@react-spring/web";
 
 export const useAboutAnimations = () => {
+  const [missionVisible, setMissionVisible] = useState(false);
+  const [valuesVisible, setValuesVisible] = useState(false);
+  const [teamVisible, setTeamVisible] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
+
   const heroSpring = useSpring({
     from: { opacity: 0, transform: "translateY(-30px)" },
     to: { opacity: 1, transform: "translateY(0)" },
@@ -8,24 +15,27 @@ export const useAboutAnimations = () => {
   });
 
   const missionSpring = useSpring({
-    from: { opacity: 0, transform: "translateX(-50px)" },
-    to: { opacity: 1, transform: "translateX(0)" },
-    delay: 200,
-    config: config.gentle,
+    opacity: missionVisible ? 1 : 0,
+    transform: missionVisible ? "translateY(0)" : "translateY(8rem)",
+    config: { mass: 1, tension: 80, friction: 26 },
   });
 
   const valuesSpring = useSpring({
-    from: { opacity: 0, transform: "translateY(30px)" },
-    to: { opacity: 1, transform: "translateY(0)" },
-    delay: 400,
-    config: config.gentle,
+    opacity: valuesVisible ? 1 : 0,
+    transform: valuesVisible ? "translateY(0)" : "translateY(8rem)",
+    config: { mass: 1, tension: 80, friction: 26 },
   });
 
   const teamSpring = useSpring({
-    from: { opacity: 0, scale: 0.9 },
-    to: { opacity: 1, scale: 1 },
-    delay: 600,
-    config: config.gentle,
+    opacity: teamVisible ? 1 : 0,
+    transform: teamVisible ? "translateY(0)" : "translateY(8rem)",
+    config: { mass: 1, tension: 80, friction: 26 },
+  });
+
+  const footerSpring = useSpring({
+    opacity: footerVisible ? 1 : 0,
+    transform: footerVisible ? "translateY(0)" : "translateY(8rem)",
+    config: { mass: 1, tension: 80, friction: 26 },
   });
 
   return {
@@ -33,5 +43,10 @@ export const useAboutAnimations = () => {
     missionSpring,
     valuesSpring,
     teamSpring,
+    footerSpring,
+    setMissionVisible,
+    setValuesVisible,
+    setTeamVisible,
+    setFooterVisible,
   };
 };

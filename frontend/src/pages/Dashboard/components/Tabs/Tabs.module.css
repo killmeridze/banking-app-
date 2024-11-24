@@ -14,7 +14,7 @@
   max-width: 1200px;
   margin: 2rem auto;
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
   background: rgba(255, 255, 255, 0.3);
@@ -23,6 +23,7 @@
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
 }
 
 .tab_btn {
@@ -37,6 +38,8 @@
   cursor: pointer;
   transition: all 0.3s;
   font-family: "Montserrat", sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
 .tab_btn.active {
@@ -62,4 +65,13 @@
 
 .action_btn {
   min-width: 140px;
+}
+
+.active_indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-primary);
 }

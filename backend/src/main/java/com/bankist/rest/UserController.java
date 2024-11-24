@@ -41,17 +41,14 @@ public class UserController {
         String email = registrationData.get("email");
         String password = registrationData.get("password");
 
-        // Validate required fields
         if (username == null || email == null || password == null) {
             return ResponseEntity.badRequest().body("Missing required fields");
         }
 
-        // Check if user already exists
         if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
             return ResponseEntity.badRequest().body("Username or email already exists");
         }
 
-        // Create new user
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
@@ -59,7 +56,6 @@ public class UserController {
         
         userRepository.save(user);
 
-        // Generate JWT token
         String token = jwtProvider.generateToken(username);
         
         return ResponseEntity.ok(Map.of("token", token));
