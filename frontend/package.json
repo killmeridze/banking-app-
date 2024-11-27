@@ -2,11 +2,9 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@react-spring/web": "^9.7.5",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "framer-motion": "^11.11.17",
     "react": "^18.3.1",
@@ -14,22 +12,13 @@
     "react-hook-form": "^7.53.2",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.28.0",
-    "react-scripts": "5.0.1",
     "react-transition-group": "^4.4.5",
-    "swiper": "^11.1.14",
-    "web-vitals": "^2.1.4"
+    "swiper": "^11.1.14"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "browserslist": {
     "production": [
@@ -44,8 +33,8 @@
     ]
   },
   "devDependencies": {
-    "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.2.1"
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.1"
   },
   "proxy": "http://localhost:8080"
 }
