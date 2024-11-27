@@ -10,6 +10,7 @@ import com.bankist.repo.LoanRepository;
 import com.bankist.repo.TransactionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -33,20 +34,17 @@ public class LoanService {
     private static final double BASE_MIN_LOAN_AMOUNT_USD = 1000.0;
     private static final double BASE_MAX_LOAN_AMOUNT_USD = 50000.0;
 
+    @Transactional
     public Loan issueLoan(User user, double amountInUSD, Long cardId) {
-        System.out.println("Issuing loan for user: " + user.getId() + ", amountInUSD: " + amountInUSD + ", cardId: " + cardId);
         
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new IllegalArgumentException("Карта с ID " + cardId + " не найдена."));
 
-        System.out.println("Selected card: " + card.getId());
 
         double amountInCardCurrency = currencyService.convertAmount(amountInUSD, "USD", card.getCurrency());
-        System.out.println("Converted amount: " + amountInCardCurrency + " " + card.getCurrency());
 
         card.setBalance(card.getBalance() + amountInCardCurrency);
         Card savedCard = cardRepository.save(card);
-        System.out.println("Updated card balance: " + savedCard.getBalance());
 
         Loan loan = new Loan();
         loan.setUser(user);
@@ -61,7 +59,15 @@ public class LoanService {
         loan.setCard(savedCard); 
         
         Loan savedLoan = loanRepository.save(loan);
-        System.out.println("Loan issued with ID: " + savedLoan.getId() + " for card: " + savedLoan.getCard().getId());
+
+        Transaction loanTransaction = new Transaction();
+        loanTransaction.setUser(user);
+        loanTransaction.setCard(card);
+        loanTransaction.setAmount(amountInCardCurrency);
+        loanTransaction.setTransactionDate(new Date());
+        loanTransaction.setTransactionType(TransactionType.LOAN_ISSUE);
+        loanTransaction.setLoan(savedLoan);
+        transactionRepository.save(loanTransaction);
 
         return savedLoan;
     }
@@ -149,6 +155,8 @@ public class LoanService {
 
         Transaction transaction = new Transaction();
         transaction.setUser(user);
+        transaction.setCard(card);
+        transaction.setLoan(loan);
         transaction.setAmount(-repaymentAmountInCardCurrency);
         transaction.setTransactionDate(new Date());
         transaction.setTransactionType(TransactionType.LOAN_REPAYMENT);

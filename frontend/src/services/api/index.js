@@ -6,35 +6,33 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
-  async request(endpoint, options = {}) {
+  request = async (endpoint, options = {}) => {
     try {
       const token = AuthTokenService.getToken();
       const headers = {
         "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
       };
 
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "API Error");
+        throw new Error(response.statusText);
       }
 
-      const data = await response.json();
-
-      if (data.token) {
-        AuthTokenService.setToken(data.token);
-      }
-
-      return data;
+      return await response.json();
     } catch (error) {
+      console.error("API Request failed:", error);
       throw error;
     }
+  };
+
+  getAuthToken() {
+    return sessionStorage.getItem("token");
   }
 
   auth = {
@@ -117,6 +115,13 @@ class ApiService {
     getRates: () => this.request(ENDPOINTS.EXCHANGE_RATES.GET),
     getConvertedAmount: (amount, from, to) =>
       this.request(ENDPOINTS.EXCHANGE_RATES.CONVERT(amount, from, to)),
+  };
+
+  transactions = {
+    getByCard: (cardId) =>
+      this.request(ENDPOINTS.TRANSACTIONS.BY_CARD(cardId), {
+        method: "GET",
+      }),
   };
 }
 

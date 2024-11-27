@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { api } from "../../../services/api";
 import { errorHandler } from "../../../services/errorHandler";
+import { calculateSummary } from "../utils/calculations";
 
 export const useDashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -11,41 +12,79 @@ export const useDashboard = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showAddCardModal, setShowAddCardModal] = useState(false);
   const [loans, setLoans] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [summary, setSummary] = useState({
+    incomes: 0,
+    outgoings: 0,
+    interests: 0,
+  });
 
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
       const userId = sessionStorage.getItem("currentUserId");
       const data = await api.users.getProfile(userId);
-
       const userLoans = await api.loans.getUserLoans(userId);
-
-      console.log("Fetched user data:", data);
 
       setUserData({
         ...data,
         loans: userLoans,
       });
       setLoans(userLoans);
-
-      if (data?.cards?.length > 0 && !selectedCard) {
-        setSelectedCard(data.cards[0]);
-      }
     } catch (error) {
       setError(errorHandler.handleApiError(error));
     } finally {
       setLoading(false);
     }
-  }, [selectedCard]);
+  }, []);
+
+  const fetchTransactions = useCallback(async (cardId) => {
+    try {
+      if (!cardId) return;
+
+      const data = await api.transactions.getByCard(cardId);
+      setTransactions(data || []);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      setTransactions([]);
+    }
+  }, []);
+
+  const fetchSummary = useCallback(() => {
+    if (transactions && loans && selectedCard) {
+      const cardLoans = loans.filter((loan) => loan.cardId === selectedCard.id);
+      const calculatedSummary = calculateSummary(
+        transactions,
+        cardLoans,
+        selectedCard.currency,
+        api.convert
+      );
+      setSummary(calculatedSummary);
+    }
+  }, [transactions, loans, selectedCard]);
 
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
 
+  useEffect(() => {
+    if (selectedCard) {
+      fetchTransactions(selectedCard.id);
+    }
+  }, [selectedCard, fetchTransactions]);
+
+  useEffect(() => {
+    fetchSummary();
+  }, [transactions, loans, selectedCard, fetchSummary]);
+
   const handleTransfer = async (transferData) => {
     try {
       await api.transfer(transferData);
       await fetchUserData();
+      if (selectedCard) {
+        await fetchTransactions(selectedCard.id);
+      }
       return { success: true };
     } catch (error) {
       const errorMessage =
@@ -61,14 +100,11 @@ export const useDashboard = () => {
         throw new Error("Missing user or card data");
       }
 
-      console.log("Sending loan request:", {
-        userId,
-        cardId,
-        amount,
-      });
-
       await api.loans.request(userId, cardId, amount);
       await fetchUserData();
+      if (selectedCard) {
+        await fetchTransactions(selectedCard.id);
+      }
     } catch (error) {
       setError(errorHandler.handleApiError(error));
     }
@@ -78,6 +114,9 @@ export const useDashboard = () => {
     try {
       await api.loans.repay(loanId, amount);
       await fetchUserData();
+      if (selectedCard) {
+        await fetchTransactions(selectedCard.id);
+      }
       setShowLoanModal(false);
     } catch (error) {
       alert(errorHandler.handleApiError(error));
@@ -117,6 +156,7 @@ export const useDashboard = () => {
     loading,
     error,
     sortOrder,
+    summary,
     showLoanModal,
     setShowLoanModal,
     selectedCard,
@@ -131,5 +171,8 @@ export const useDashboard = () => {
     handleSort,
     handleLogout,
     handleAddCard,
+    transactions,
+    activeTab,
+    setActiveTab,
   };
 };

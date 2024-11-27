@@ -22,4 +22,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT SUM(t.amount) FROM Transaction t WHERE t.user.id = :userId AND t.transactionType = :transactionType")
     Double sumAmountByUserIdAndType(@Param("userId") Long userId, @Param("transactionType") TransactionType transactionType);
+
+    @Query("SELECT t FROM Transaction t WHERE t.card.id = :cardId")
+    List<Transaction> findByCardId(@Param("cardId") Long cardId);
+
+    List<Transaction> findByCardIdOrderByTransactionDateDesc(Long cardId);
 }

@@ -1,17 +1,50 @@
-export const calculateSummary = (movements, loans) => {
-  const incomes = movements
-    .filter((mov) => mov.amount > 0)
-    .reduce((acc, mov) => acc + mov.amount, 0);
+export const calculateSummary = (movements, loans, currency, convert) => {
+  let incomes = 0;
+  let outgoings = 0;
+  let interests = 0;
 
-  const outgoings = Math.abs(
-    movements
-      .filter((mov) => mov.amount < 0)
-      .reduce((acc, mov) => acc + mov.amount, 0)
-  );
+  if (movements && movements.length > 0) {
+    movements.forEach((mov) => {
+      const amount = Math.abs(mov.amount);
 
-  const interests = loans.reduce((acc, loan) => {
-    return acc + loan.amount * (loan.interestRate / 100);
-  }, 0);
+      switch (mov.transactionType) {
+        case "LOAN_ISSUE":
+          incomes += amount;
+          break;
+        case "LOAN_REPAYMENT":
+          outgoings += amount;
+          break;
+        case "TRANSFER":
+          if (mov.amount > 0) {
+            incomes += amount;
+          } else {
+            outgoings += amount;
+          }
+          break;
+        case "DEPOSIT":
+          incomes += amount;
+          break;
+        case "WITHDRAWAL":
+          outgoings += amount;
+          break;
+        default:
+          if (mov.amount > 0) {
+            incomes += amount;
+          } else {
+            outgoings += amount;
+          }
+      }
+    });
+  }
+
+  if (loans && loans.length > 0) {
+    loans.forEach((loan) => {
+      if (loan.amount > 0) {
+        const interestAmount = convert(loan.interestAmount, "USD", currency);
+        interests += interestAmount;
+      }
+    });
+  }
 
   return { incomes, outgoings, interests };
 };

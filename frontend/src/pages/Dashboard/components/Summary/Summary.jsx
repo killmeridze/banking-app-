@@ -1,9 +1,16 @@
 import { calculateSummary } from "../../utils/calculations";
 import { formatCurrency } from "../../utils/formatters";
 import styles from "./Summary.module.css";
+import { useExchangeRates } from "../../hooks/useExchangeRates";
 
 export const Summary = ({ movements = [], loans = [], currency }) => {
-  const { incomes, outgoings, interests } = calculateSummary(movements, loans);
+  const { convert } = useExchangeRates();
+  const { incomes, outgoings, interests } = calculateSummary(
+    movements,
+    loans,
+    currency,
+    convert
+  );
 
   return (
     <div className={styles.summary_container}>

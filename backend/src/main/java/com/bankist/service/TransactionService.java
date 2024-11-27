@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,31 +83,8 @@ public class TransactionService {
         return currencyService.convertAmount(amount, fromCurrency, toCurrency);
     }
 
-    
 
-    public boolean requestLoan(Long userId, double amount, Long cardId) { 
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (!userOpt.isPresent()) {
-            return false;
-        }
-
-        try {
-            Loan loan = loanService.issueLoan(userOpt.get(), amount, cardId);
-            
-            Transaction transaction = new Transaction();
-            transaction.setUser(userOpt.get());
-            transaction.setAmount(amount);
-            transaction.setTransactionDate(new Date());
-            transaction.setTransactionType(TransactionType.LOAN_ISSUE);
-            transaction.setLoan(loan);
-            transactionRepository.save(transaction);
-
-            return true;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
+    @Transactional
     public boolean transferByCardNumber(String fromCardNumber, String toCardNumber, double amount) {
         try {
             fromCardNumber = fromCardNumber.replaceAll("\\s+", "");
@@ -148,22 +126,33 @@ public class TransactionService {
 
             Transaction senderTx = new Transaction();
             senderTx.setUser(senderCard.getUser());
-            senderTx.setAmount(-amountToDebit);
+            senderTx.setCard(senderCard);
+            senderTx.setAmount(-amountToDebit); 
             senderTx.setTransactionDate(new Date());
             senderTx.setTransactionType(TransactionType.TRANSFER);
-            transactionRepository.save(senderTx);
+            Transaction savedSenderTx = transactionRepository.save(senderTx);
 
             Transaction recipientTx = new Transaction();
             recipientTx.setUser(recipientCard.getUser());
-            recipientTx.setAmount(amountToCredit);
+            recipientTx.setCard(recipientCard);
+            recipientTx.setAmount(amountToCredit); 
             recipientTx.setTransactionDate(new Date());
             recipientTx.setTransactionType(TransactionType.TRANSFER);
-            transactionRepository.save(recipientTx);
+            Transaction savedRecipientTx = transactionRepository.save(recipientTx);
+
+            if (savedSenderTx.getId() == null || savedRecipientTx.getId() == null) {
+                throw new RuntimeException("Failed to save transfer transactions");
+            }
 
             return true;
 
         } catch (Exception e) {
-            throw new IllegalArgumentException("Transfer error: " + e.getMessage());
+            throw new IllegalArgumentException("Transfer failed: " + e.getMessage());
         }
+    }
+
+    @Transactional
+    public List<Transaction> getTransactionsByCardId(Long cardId) {
+        return transactionRepository.findByCardId(cardId);
     }
 }

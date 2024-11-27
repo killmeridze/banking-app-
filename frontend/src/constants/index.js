@@ -22,8 +22,13 @@ export const ENDPOINTS = {
   },
   EXCHANGE_RATES: {
     GET: `/exchange-rates`,
+    CONVERT: (amount, from, to) =>
+      `/api/exchange-rates/convert?amount=${amount}&from=${from}&to=${to}`,
   },
   TRANSFERS: "/transfers",
+  TRANSACTIONS: {
+    BY_CARD: (cardId) => `/transactions/card/${cardId}`,
+  },
 };
 
 export const VALIDATION_PATTERNS = {

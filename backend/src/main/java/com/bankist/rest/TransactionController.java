@@ -3,11 +3,15 @@ package com.bankist.rest;
 import com.bankist.annotations.LogController;
 import com.bankist.model.Transaction;
 import com.bankist.service.TransactionService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @RestController
 @LogController 
@@ -33,6 +37,23 @@ public class TransactionController {
         return transactionService.findTransactionById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/card/{cardId}")
+    public ResponseEntity<List<Transaction>> getCardTransactions(@PathVariable Long cardId) {
+        List<Transaction> transactions = transactionService.getTransactionsByCardId(cardId);
+        
+        transactions.forEach(tx -> {
+            Hibernate.initialize(tx.getUser());
+            if (tx.getLoan() != null) {
+                Hibernate.initialize(tx.getLoan());
+            }
+            if (tx.getCard() != null) {
+                Hibernate.initialize(tx.getCard());
+            }
+        });
+        
+        return ResponseEntity.ok(transactions);
     }
 
     @PostMapping

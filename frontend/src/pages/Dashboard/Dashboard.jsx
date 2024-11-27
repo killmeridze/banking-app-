@@ -20,9 +20,7 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showLoanModal, setShowLoanModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
   const [isCentered, setIsCentered] = useState(true);
-  const [activeTab, setActiveTab] = useState("overview");
   const {
     userData,
     loading,
@@ -34,6 +32,11 @@ export const Dashboard = () => {
     handleLogout,
     handleAddCard,
     handleSort,
+    transactions,
+    activeTab,
+    setActiveTab,
+    selectedCard,
+    setSelectedCard,
   } = useDashboard();
 
   useLogoutTimer(() => {
@@ -58,7 +61,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     setActiveTab("overview");
-  }, [selectedCard?.id]);
+  }, [selectedCard?.id, setActiveTab]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -104,8 +107,12 @@ export const Dashboard = () => {
                     <div className={styles.overview_content}>
                       <CardInfo card={selectedCard} user={userData} />
                       <Summary
-                        movements={selectedCard.transactions || []}
-                        loans={userData?.loans || []}
+                        movements={transactions}
+                        loans={
+                          userData?.loans?.filter(
+                            (loan) => loan.card?.id === selectedCard?.id
+                          ) || []
+                        }
                         currency={selectedCard.currency}
                       />
                     </div>
@@ -136,7 +143,7 @@ export const Dashboard = () => {
 
                   {activeTab === "transactions" && (
                     <TransactionsList
-                      transactions={selectedCard.transactions}
+                      transactions={transactions}
                       currency={selectedCard.currency}
                       sortOrder={sortOrder}
                       onSort={handleSort}
