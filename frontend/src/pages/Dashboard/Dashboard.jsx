@@ -114,6 +114,7 @@ export const Dashboard = () => {
                           ) || []
                         }
                         currency={selectedCard.currency}
+                        cardId={selectedCard.id}
                       />
                     </div>
                   )}

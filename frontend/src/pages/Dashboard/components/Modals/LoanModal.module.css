@@ -12,6 +12,14 @@
   position: relative;
 }
 
+.modal_header h2 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .close_btn {
   position: absolute;
   right: 1rem;

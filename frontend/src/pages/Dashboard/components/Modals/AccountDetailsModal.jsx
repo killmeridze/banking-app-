@@ -29,8 +29,8 @@ export const AccountDetailsModal = ({ user, account, onClose }) => {
             IBAN{" "}
             <span className={styles.tooltip}>
               ⓘ
-              <span className={styles.tooltip_text}>
-                Международный номер банковского счета
+              <span className={`${styles.tooltip_text} ${styles.tooltip_text_iban}`}>
+                Международный номер<br/>банковского счета
               </span>
             </span>
           </label>
