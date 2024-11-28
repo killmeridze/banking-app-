@@ -38,13 +38,14 @@ export const Login = () => {
       <animated.div className="form-container" style={formSpring}>
         <form className="login" onSubmit={handleSubmit}>
           <input
-            type="text"
+            type="username"
             placeholder="Имя пользователя"
             className={`login__input ${errors.username ? "warning" : ""}`}
             name="username"
             value={credentials.username}
             onChange={handleChange}
             required
+            autoComplete="username"
           />
           <input
             type="password"
@@ -54,6 +55,7 @@ export const Login = () => {
             value={credentials.password}
             onChange={handleChange}
             required
+            autoComplete="current-password"
           />
 
           {(errors.username || errors.password || errors.general) && (

@@ -97,7 +97,7 @@ export const CardsList = ({
                   onClick={() => handleCardClick(card)}
                 >
                   <div className={styles.card_number}>
-                    {card.cardNumber.replace(/(\d{4})/g, "$1 ")}
+                    {maskCardNumber(card.cardNumber)}
                   </div>
                   <div className={styles.card_balance}>
                     {formatCurrency(card.balance, card.currency)}

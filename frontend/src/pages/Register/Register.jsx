@@ -30,8 +30,8 @@ export const Register = () => {
         alt="Логотип"
         className="logo"
         style={logoSpring}
-        onMouseEnter={() => setLogoSpring({ scale: 1.05 })}
-        onMouseLeave={() => setLogoSpring({ scale: 1 })}
+        onMouseEnter={() => setLogoSpring.start({ scale: 1.05 })}
+        onMouseLeave={() => setLogoSpring.start({ scale: 1 })}
       />
       <animated.h1 className="welcome" style={titleSpring}>
         <span className="highlight">Зарегистрируйтесь</span> чтобы начать
