@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLogin } from "./hooks/useLogin";
 import { Link } from "react-router-dom";
 import { animated } from "@react-spring/web";
@@ -6,11 +6,13 @@ import { useLoginAnimations } from "./hooks/useLoginAnimations";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import logo from "../../assets/img/logo.png";
 import "./Login.css";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export const Login = () => {
   usePageTitle("Вход");
   const { credentials, errors, isLoading, handleChange, handleSubmit } =
     useLogin();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     containerSpring,
     logoSpring,
@@ -39,22 +41,42 @@ export const Login = () => {
         <form className="login" onSubmit={handleSubmit}>
           <input
             type="text"
+            style={{ display: "none" }}
+            name="username-hidden"
+            autoComplete="username"
+            value={credentials.username}
+            onChange={handleChange}
+          />
+
+          <input
+            type="username"
             placeholder="Имя пользователя"
             className={`login__input ${errors.username ? "warning" : ""}`}
             name="username"
             value={credentials.username}
             onChange={handleChange}
             required
+            autoComplete="username"
           />
-          <input
-            type="password"
-            placeholder="Пароль"
-            className={`login__input ${errors.password ? "warning" : ""}`}
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Пароль"
+              className={`login__input ${errors.password ? "warning" : ""}`}
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            </button>
+          </div>
 
           {(errors.username || errors.password || errors.general) && (
             <div className="form-errors">

@@ -1,16 +1,10 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/style.css";
 import "./styles/responsive.css";
-import Login from "./pages/Login/Login";
+import { Home } from "./pages/Home/Home";
+import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
 import { Dashboard } from "./pages/Dashboard/Dashboard";
-import { Home } from "./pages/Home/Home";
 import { AboutUs } from "./pages/AboutUs/AboutUs";
 
 const router = createBrowserRouter(
@@ -40,6 +34,10 @@ const router = createBrowserRouter(
     future: {
       v7_startTransition: true,
       v7_relativeSplatPath: true,
+      v7_normalizeFormMethod: true,
+      v7_fetcherPersist: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
     },
   }
 );

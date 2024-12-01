@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import { useRegister } from "./hooks/useRegister";
 import { animated } from "@react-spring/web";
 import { useRegisterAnimations } from "./hooks/useRegisterAnimations";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export const Register = () => {
   const { formData, handleChange, handleSubmit, formErrors, isLoading } =
@@ -19,6 +20,9 @@ export const Register = () => {
     titleSpring,
   } = useRegisterAnimations();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -30,8 +34,8 @@ export const Register = () => {
         alt="Логотип"
         className="logo"
         style={logoSpring}
-        onMouseEnter={() => setLogoSpring({ scale: 1.05 })}
-        onMouseLeave={() => setLogoSpring({ scale: 1 })}
+        onMouseEnter={() => setLogoSpring.start({ scale: 1.05 })}
+        onMouseLeave={() => setLogoSpring.start({ scale: 1 })}
       />
       <animated.h1 className="welcome" style={titleSpring}>
         <span className="highlight">Зарегистрируйтесь</span> чтобы начать
@@ -61,29 +65,51 @@ export const Register = () => {
             spellCheck="false"
           />
 
-          <input
-            type="password"
-            placeholder="Пароль"
-            className={`login__input ${formErrors.password ? "warning" : ""}`}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            autoComplete="new-password"
-          />
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Пароль"
+              className={`login__input ${formErrors.password ? "warning" : ""}`}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+            </button>
+          </div>
 
-          <input
-            type="password"
-            placeholder="Подтвердите пароль"
-            className={`login__input ${
-              formErrors.confirmPassword ? "warning" : ""
-            }`}
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-            autoComplete="new-password"
-          />
+          <div className="password-field">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Подтвердите пароль"
+              className={`login__input ${
+                formErrors.confirmPassword ? "warning" : ""
+              }`}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? (
+                <AiOutlineEye />
+              ) : (
+                <AiOutlineEyeInvisible />
+              )}
+            </button>
+          </div>
 
           <div className="form-errors">
             {Object.values(formErrors).filter(Boolean).length > 0 &&

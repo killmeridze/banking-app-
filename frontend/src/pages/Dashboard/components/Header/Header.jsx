@@ -15,12 +15,13 @@ export const Header = ({ username, onLogout }) => (
         <Link to="/" className={styles.nav_link}>
           На главную
         </Link>
-        <button
+        <Link
+          to="/login"
           className={`${styles.nav_link} ${styles.logout_btn}`}
           onClick={onLogout}
         >
           Выйти
-        </button>
+        </Link>
       </div>
     </div>
   </header>
