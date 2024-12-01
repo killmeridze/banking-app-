@@ -66,6 +66,12 @@ export const AddCardForm = ({ onAddCard, onClose }) => {
         </div>
 
         <div className={styles.form_group}>
+          <input
+            type="text"
+            autoComplete="username"
+            aria-hidden="true"
+            style={{ display: "none" }}
+          />
           <label>PIN-код</label>
           <input
             type="password"
@@ -79,6 +85,7 @@ export const AddCardForm = ({ onAddCard, onClose }) => {
             placeholder="Введите 4-значный PIN"
             required
             className={`${styles.input} ${pinError ? styles.error_input : ""}`}
+            autoComplete="new-password"
           />
           {pinError && <span className={styles.error_message}>{pinError}</span>}
         </div>

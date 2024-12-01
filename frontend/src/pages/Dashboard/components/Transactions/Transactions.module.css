@@ -111,7 +111,6 @@
   color: var(--color-tertiary);
 }
 
-/* Custom scrollbar */
 .transactions::-webkit-scrollbar {
   width: 8px;
 }

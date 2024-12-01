@@ -6,7 +6,6 @@ lg: 1024px-1200px (laptops/desktops)
 xl: 1200px+ (large desktops)
 */
 
-/* Base Styles */
 :root {
   font-size: 62.5%;
 }

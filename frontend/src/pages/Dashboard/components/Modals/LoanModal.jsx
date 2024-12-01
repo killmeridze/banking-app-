@@ -82,10 +82,20 @@ export const LoanModal = ({
   };
 
   const activeLoans =
-    loans?.filter((loan) => loan.amount > 0 && loan.card.id === card.id) || [];
+    loans?.filter((loan) => {
+      const remainingAmount = loan.totalAmount - loan.paidAmount;
+      const hasRemainingBalance = Math.abs(remainingAmount) > 0.1;
+
+      return loan.card.id === card.id && (hasRemainingBalance || loan.isActive);
+    }) || [];
 
   const hasActiveLoansOnOtherCards =
-    loans?.some((loan) => loan.amount > 0 && loan.card.id !== card.id) || false;
+    loans?.some((loan) => {
+      const remainingAmount = loan.totalAmount - loan.paidAmount;
+      const hasRemainingBalance = Math.abs(remainingAmount) > 0.1;
+
+      return loan.card.id !== card.id && (hasRemainingBalance || loan.isActive);
+    }) || false;
 
   const handleLoanRequest = (e) => {
     e.preventDefault();
