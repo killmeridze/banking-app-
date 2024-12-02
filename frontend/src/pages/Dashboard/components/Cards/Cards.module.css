@@ -20,7 +20,7 @@
   margin: 0 auto;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1200px;
+  max-width: 500px;
 }
 
 .cards_wrapper {
@@ -83,7 +83,6 @@
     var(--color-primary-light),
     var(--color-primary)
   );
-  color: var(--white);
   padding: 1rem;
   border-radius: 1rem;
   cursor: pointer;
@@ -94,6 +93,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 40px;
 }
 
 .card.active {
@@ -138,4 +138,75 @@
   padding: 2rem;
   font-size: 1.6rem;
   color: var(--color-text-secondary);
+}
+
+.swiper {
+  width: 100%;
+  padding: 40px 0 80px;
+  position: relative;
+  overflow: visible;
+}
+
+.swiper :global(.swiper-wrapper) {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.swiper :global(.swiper-slide) {
+  display: flex;
+  justify-content: center;
+  height: auto;
+}
+
+.swiper :global(.swiper-pagination) {
+  bottom: -8px !important;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+}
+
+.swiper :global(.swiper-pagination-bullet) {
+  width: 10px;
+  height: 10px;
+  background: var(--white);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  margin: 0 4px;
+}
+
+.swiper :global(.swiper-pagination-bullet-active) {
+  opacity: 1;
+  transform: scale(1.2);
+  background: var(--color-primary);
+}
+
+.swiper :global(.swiper-pagination-bullet-active-main) {
+  background: var(--primary-color);
+}
+
+.swiper :global(.swiper-button-next),
+.swiper :global(.swiper-button-prev) {
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  top: calc(50% - 10px);
+  margin-top: -40px;
+}
+
+.swiper :global(.swiper-button-next):after,
+.swiper :global(.swiper-button-prev):after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.swiper :global(.swiper-button-next) {
+  right: 10px;
+}
+
+.swiper :global(.swiper-button-prev) {
+  left: 10px;
 }

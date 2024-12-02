@@ -7,6 +7,12 @@ import {
 } from "../../utils/formatters";
 import { AddCardForm } from "../../components/Forms/AddCardForm";
 import { Modal } from "../../components/Modals/Modal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export const CardsList = ({
   cards = [],
@@ -27,22 +33,6 @@ export const CardsList = ({
     }
   };
 
-  useEffect(() => {
-    setActiveCard(null);
-    onCardSelect(null);
-  }, [cards.length, onCardSelect]);
-
-  const leftCards = [];
-  const rightCards = [];
-
-  cards.forEach((card, index) => {
-    if (index % 2 === 0) {
-      leftCards.push(card);
-    } else {
-      rightCards.push(card);
-    }
-  });
-
   return (
     <div className={styles.cards_section}>
       {isLoading ? (
@@ -53,11 +43,19 @@ export const CardsList = ({
             Выберите карту для просмотра операций
           </div>
 
-          <div className={styles.cards_wrapper}>
-            <div className={styles.left_cards}>
-              {leftCards.map((card) => (
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={30}
+            slidesPerView={1}
+            centeredSlides={true}
+            pagination={{ clickable: true }}
+            navigation={true}
+            className={styles.swiper}
+            slideToClickedSlide={true}
+          >
+            {cards.map((card) => (
+              <SwiperSlide key={card.id}>
                 <div
-                  key={card.id}
                   className={`${styles.card} ${
                     activeCard === card.id ? styles.active : ""
                   }`}
@@ -77,42 +75,18 @@ export const CardsList = ({
                     {formatCardType(card.cardType)}
                   </div>
                 </div>
-              ))}
-            </div>
+              </SwiperSlide>
+            ))}
 
-            <button
-              className={styles.add_card}
-              onClick={() => setShowAddCardModal(true)}
-            >
-              + Добавить карту
-            </button>
-
-            <div className={styles.right_cards}>
-              {rightCards.map((card) => (
-                <div
-                  key={card.id}
-                  className={`${styles.card} ${
-                    activeCard === card.id ? styles.active : ""
-                  }`}
-                  onClick={() => handleCardClick(card)}
-                >
-                  <div className={styles.card_number}>
-                    {maskCardNumber(card.cardNumber)}
-                  </div>
-                  <div className={styles.card_balance}>
-                    {formatCurrency(card.balance, card.currency)}
-                  </div>
-                  <div className={styles.card_expiry}>
-                    Действительна до:{" "}
-                    {new Date(card.expirationDate).toLocaleDateString()}
-                  </div>
-                  <div className={styles.card_type}>
-                    {formatCardType(card.cardType)}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+            <SwiperSlide>
+              <div
+                className={`${styles.card} ${styles.add_card}`}
+                onClick={() => setShowAddCardModal(true)}
+              >
+                + Добавить карту
+              </div>
+            </SwiperSlide>
+          </Swiper>
         </>
       )}
 
