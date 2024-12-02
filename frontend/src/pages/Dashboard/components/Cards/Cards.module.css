@@ -55,7 +55,7 @@
   margin-bottom: 1rem;
 }
 
-.add_card {
+.card.add_card {
   min-width: 300px;
   aspect-ratio: 1.6;
   border: 2px dashed var(--color-primary);
@@ -77,7 +77,7 @@
   color: var(--white);
 }
 
-.card {
+.card:not(.add_card) {
   background: linear-gradient(
     135deg,
     var(--color-primary-light),
@@ -93,7 +93,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 40px;
 }
 
 .card.active {
@@ -142,9 +141,21 @@
 
 .swiper {
   width: 100%;
-  padding: 40px 0 80px;
+  padding: 40px 0;
   position: relative;
   overflow: visible;
+}
+
+.swiper:has(.swiper-pagination:not(.swiper-pagination-lock)) {
+  padding-bottom: 80px;
+}
+
+.swiper:has(.card:not(.add_card)) .card:not(.add_card) {
+  margin-bottom: 40px;
+}
+
+.swiper:has(.card:not(.add_card)) .add_card {
+  margin-bottom: 40px;
 }
 
 .swiper :global(.swiper-wrapper) {
