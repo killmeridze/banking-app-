@@ -16,11 +16,16 @@
   -webkit-backdrop-filter: blur(10px);
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 2rem;
+  padding: 1rem;
   margin: 0 auto;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+  max-width: 450px;
+  min-height: auto;
+}
+
+.cards_section:has(.card:not(.add_card)) {
+  padding: 0.5rem;
 }
 
 .cards_wrapper {
@@ -49,10 +54,15 @@
 }
 
 .select_card_message {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--black);
   text-align: center;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  padding: 0.5rem 0;
 }
 
 .card.add_card {
@@ -87,7 +97,7 @@
   border-radius: 1rem;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  min-width: 300px;
+  min-width: 260px;
   aspect-ratio: 1.6;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -141,13 +151,13 @@
 
 .swiper {
   width: 100%;
-  padding: 40px 0;
+  padding: 0.5rem 0;
   position: relative;
   overflow: visible;
 }
 
 .swiper:has(.swiper-pagination:not(.swiper-pagination-lock)) {
-  padding-bottom: 80px;
+  padding-bottom: 60px;
 }
 
 .swiper:has(.card:not(.add_card)) .card:not(.add_card) {
@@ -177,7 +187,7 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 20px 0;
+  padding: 25px 0;
 }
 
 .swiper :global(.swiper-pagination-bullet) {
@@ -205,7 +215,7 @@
   width: 40px;
   height: 40px;
   top: calc(50% - 10px);
-  margin-top: -40px;
+  margin-top: -35px;
 }
 
 .swiper :global(.swiper-button-next):after,

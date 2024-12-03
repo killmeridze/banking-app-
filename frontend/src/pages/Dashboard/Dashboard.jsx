@@ -13,6 +13,7 @@ import { Summary } from "./components/Summary/Summary";
 import { Modal } from "./components/Modals/Modal";
 import { useLogoutTimer } from "./hooks/useLogoutTimer";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import { Footer } from "../../pages/Home/components/Footer/Footer";
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = () => {
@@ -156,6 +157,8 @@ export const Dashboard = () => {
           </div>
         )}
       </motion.main>
+
+      <Footer />
 
       {showTransferModal && (
         <Modal

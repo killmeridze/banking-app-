@@ -132,14 +132,16 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
-  transition: margin-top 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .no_card_selected {
@@ -153,7 +155,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: calc(20vh - 2rem);
+  min-height: 60vh;
+  margin-top: calc(30vh - 9rem);
+  margin-bottom: 4rem;
+}
+
+:global(.footer) {
+  margin-top: auto;
+  padding-top: 6rem;
 }
 
 .overview_content {
@@ -168,4 +177,18 @@
   gap: 1rem;
   justify-content: center;
   padding: 2rem;
+}
+
+.content_container {
+  position: relative;
+  width: 100%;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.content_wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: center;
 }
