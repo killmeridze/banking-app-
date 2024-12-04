@@ -35,6 +35,7 @@ public class CardService {
         card.setCardType(cardType);
         card.setIban(generateIban());
         card.setRnokpp(generateRnokpp());
+        card.setCardColor(generateRandomColor());
         return cardRepository.save(card);
     }
 
@@ -78,6 +79,14 @@ public class CardService {
         rnokpp.append(random.nextInt(10));
 
         return rnokpp.toString();
+    }
+
+    private String generateRandomColor() {
+    Random random = new Random();
+    int r = random.nextInt(128) + 128; 
+    int g = random.nextInt(128) + 128; 
+    int b = random.nextInt(128) + 128; 
+    return String.format("#%02x%02x%02x", r, g, b);
     }
 
     public Card getCardByNumber(String cardNumber) {

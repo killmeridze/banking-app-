@@ -115,6 +115,7 @@ export const Dashboard = () => {
                         }
                         currency={selectedCard.currency}
                         cardId={selectedCard.id}
+                        cardColor={selectedCard.cardColor}
                       />
                     </div>
                   )}
@@ -124,12 +125,14 @@ export const Dashboard = () => {
                       <button
                         className={styles.action_btn}
                         onClick={() => setShowTransferModal(true)}
+                        style={{ "--card-color": selectedCard.cardColor }}
                       >
                         Перевести деньги
                       </button>
                       <button
                         className={styles.action_btn}
                         onClick={() => setShowLoanModal(true)}
+                        style={{ "--card-color": selectedCard.cardColor }}
                         disabled={selectedCard.cardType !== "CREDIT"}
                         title={
                           selectedCard.cardType !== "CREDIT"
@@ -148,6 +151,7 @@ export const Dashboard = () => {
                       currency={selectedCard.currency}
                       sortOrder={sortOrder}
                       onSort={handleSort}
+                      cardColor={selectedCard.cardColor}
                     />
                   )}
                 </motion.div>

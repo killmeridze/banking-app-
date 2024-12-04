@@ -52,6 +52,7 @@ export const CardsList = ({
             navigation={true}
             className={styles.swiper}
             slideToClickedSlide={true}
+            initialSlide={cards.length}
           >
             {cards.map((card) => (
               <SwiperSlide key={card.id}>
@@ -60,6 +61,7 @@ export const CardsList = ({
                     activeCard === card.id ? styles.active : ""
                   }`}
                   onClick={() => handleCardClick(card)}
+                  style={{ "--card-color": card.cardColor }}
                 >
                   <div className={styles.card_number}>
                     {maskCardNumber(card.cardNumber)}

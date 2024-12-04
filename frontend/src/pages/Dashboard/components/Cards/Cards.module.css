@@ -49,7 +49,7 @@
 }
 
 .select_card_message {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: var(--black);
   text-align: center;
   margin-bottom: 1rem;
@@ -80,19 +80,47 @@
 .card:not(.add_card) {
   background: linear-gradient(
     135deg,
-    var(--color-primary-light),
-    var(--color-primary)
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.05)
   );
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 1rem;
   border-radius: 1rem;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   min-width: 300px;
   aspect-ratio: 1.6;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.card:not(.add_card)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--card-color), transparent);
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.card:not(.add_card)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--card-color);
+  opacity: 0.15;
+  z-index: -2;
 }
 
 .card.active {
@@ -205,7 +233,7 @@
   width: 40px;
   height: 40px;
   top: calc(50% - 10px);
-  margin-top: -40px;
+  margin-top: -35px;
 }
 
 .swiper :global(.swiper-button-next):after,

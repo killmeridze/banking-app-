@@ -73,7 +73,6 @@
   margin: 2rem 0;
 }
 
-.action_btn,
 .logout_btn {
   background-color: var(--color-primary);
   color: var(--white);
@@ -85,7 +84,6 @@
   transition: background-color 0.3s;
 }
 
-.action_btn:hover,
 .logout_btn:hover {
   background-color: var(--color-primary-darker);
 }
@@ -94,16 +92,44 @@
   padding: 1.2rem 2.4rem;
   border: none;
   border-radius: 0.5rem;
-  background: var(--color-primary);
-  color: var(--white);
+  color: var(--black);
   font-size: 1.6rem;
   cursor: pointer;
   transition: all 0.3s;
   font-family: "Montserrat", sans-serif;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.action_btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--card-color), transparent);
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.action_btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--card-color);
+  opacity: 0.15;
+  z-index: -2;
 }
 
 .action_btn:hover {
-  background: var(--color-primary-darker);
   transform: translateY(-2px);
 }
 
@@ -113,8 +139,13 @@
 
 .action_btn[disabled] {
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.action_btn[disabled]::before,
+.action_btn[disabled]::after {
+  display: none;
 }
 
 .nav_link {
@@ -136,7 +167,8 @@
 
 .content {
   flex: 1;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 90%;
   margin: 0 auto;
   padding: 2rem;
   transition: margin-top 0.5s ease;
@@ -167,5 +199,4 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
-  padding: 2rem;
 }

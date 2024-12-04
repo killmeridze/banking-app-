@@ -3,7 +3,12 @@ import { formatCurrency } from "../../utils/formatters";
 import styles from "./Summary.module.css";
 import { useExchangeRates } from "../../hooks/useExchangeRates";
 
-export const Summary = ({ movements = [], loans = [], currency }) => {
+export const Summary = ({
+  movements = [],
+  loans = [],
+  currency,
+  cardColor,
+}) => {
   const { convert } = useExchangeRates();
   const { incomes, outgoings, interests } = calculateSummary(
     movements,
@@ -14,7 +19,17 @@ export const Summary = ({ movements = [], loans = [], currency }) => {
 
   return (
     <div className={styles.summary_container}>
-      <div className={styles.summary}>
+      <div
+        className={styles.summary}
+        style={{
+          "--card-color": cardColor,
+          background: `linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.15),
+            rgba(255, 255, 255, 0.05)
+          )`,
+        }}
+      >
         <div className={styles.summary_item}>
           <p className={styles.summary__label}>Доход</p>
           <p

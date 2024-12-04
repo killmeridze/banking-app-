@@ -1,19 +1,47 @@
 .transactions {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  position: relative;
+  width: 100%;
+  max-width: 70%;
+  margin: 0 auto;
+  backdrop-filter: blur(8px);
   border-radius: 1rem;
   padding: 2.5rem;
   height: 40rem;
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  overflow: hidden;
+}
+
+.transactions::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--card-color), transparent);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.transactions::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--card-color);
+  opacity: 0.15;
+  z-index: -2;
 }
 
 .transactions_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -27,21 +55,26 @@
 }
 
 .sort_btn {
-  font-size: 1.4rem;
-  font-weight: 500;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.8rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 0.5rem;
-  cursor: pointer;
+  border: none;
+  background: var(--color-primary);
   color: var(--white);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .sort_btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-primary-darker);
+  transform: translateY(-2px);
+}
+
+.sort_btn:active {
+  transform: translateY(1px);
 }
 
 .transactions_list {
@@ -51,18 +84,17 @@
 }
 
 .transaction_row {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
+  display: flex;
   padding: 1.5rem;
-  border-radius: 1.2rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  transition: all 0.3s;
 }
 
 .transaction_row:hover {
-  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .transaction_type {
@@ -90,14 +122,14 @@
 }
 
 .transaction_date {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
   align-self: center;
 }
 
 .transaction_amount {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 500;
   text-align: right;
   align-self: center;
@@ -127,4 +159,254 @@
 
 .transactions::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.filters {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.month_select {
+  padding: 0.8rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  font-size: 1.4rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.8em auto;
+  padding-right: 2.5rem;
+}
+
+.month_select:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.month_select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(94, 197, 118, 0.2);
+}
+
+.month_select option {
+  background: rgba(40, 40, 40, 0.9);
+  color: var(--white);
+  padding: 0.8rem;
+  font-size: 1.4rem;
+  backdrop-filter: blur(10px);
+}
+
+.month_select option:hover {
+  background: rgba(94, 197, 118, 0.2);
+}
+
+.transaction_details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  min-width: 120px;
+}
+
+.card_number {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+  margin-top: 0.2rem;
+}
+
+.transaction_info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.transaction_main {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.transaction_text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.transaction_label {
+  font-size: 1.4rem;
+  color: var(--white);
+}
+
+.transaction_date {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.transaction_amount {
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: right;
+  align-self: center;
+}
+
+.transaction_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1.8rem;
+}
+
+.positive {
+  color: var(--color-primary);
+}
+
+.negative {
+  color: var(--color-tertiary);
+}
+
+.transactions::-webkit-scrollbar {
+  width: 8px;
+}
+
+.transactions::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.transactions::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.transactions::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.filters {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.month_select {
+  padding: 0.8rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  font-size: 1.4rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.8em auto;
+  padding-right: 2.5rem;
+}
+
+.month_select:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.month_select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(94, 197, 118, 0.2);
+}
+
+.month_select option {
+  background: rgba(40, 40, 40, 0.9);
+  color: var(--white);
+  padding: 0.8rem;
+  font-size: 1.4rem;
+  backdrop-filter: blur(10px);
+}
+
+.month_select option:hover {
+  background: rgba(94, 197, 118, 0.2);
+}
+
+.transaction_details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  min-width: 120px;
+}
+
+.card_number {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+  margin-top: 0.2rem;
+}
+
+.transaction_info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.transaction_main {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.transaction_text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.transaction_label {
+  font-size: 1.4rem;
+  color: var(--white);
+}
+
+.transaction_date {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.transaction_amount {
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: right;
+  align-self: center;
+}
+
+.transaction_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1.8rem;
 }

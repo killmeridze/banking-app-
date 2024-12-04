@@ -1,6 +1,6 @@
 .tabs_container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 50%;
   margin: 2rem auto;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
@@ -11,7 +11,7 @@
 
 .tabs_nav {
   width: 100%;
-  max-width: 1200px;
+  max-width: 50%;
   margin: 2rem auto;
   display: flex;
   gap: 1rem;

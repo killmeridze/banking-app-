@@ -62,7 +62,17 @@ export const CardInfo = ({ card, user }) => {
   };
 
   return (
-    <div className={styles.card_info}>
+    <div
+      className={styles.card_info}
+      style={{
+        "--card-color": card.cardColor,
+        background: `linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15),
+          rgba(255, 255, 255, 0.05)
+        )`,
+      }}
+    >
       <div className={styles.header}>
         <span className={styles.card_type}>
           {card.cardType === "CREDIT" ? "Кредитная карта" : "Дебетовая карта"}

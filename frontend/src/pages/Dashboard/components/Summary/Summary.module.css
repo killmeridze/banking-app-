@@ -1,22 +1,46 @@
 .summary_container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 50%;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
 .summary {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2rem 3rem;
-  background: rgba(255, 255, 255, 0.3);
-  color: var(--color-text-primary);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  color: var(--black);
   border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  overflow: hidden;
+}
+
+.summary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(110deg, var(--card-color), transparent);
+  opacity: 0.4;
+  z-index: -1;
+}
+
+.summary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--card-color);
+  opacity: 0.15;
+  z-index: -2;
 }
 
 .summary_item {

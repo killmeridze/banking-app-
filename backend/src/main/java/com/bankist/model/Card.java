@@ -45,6 +45,9 @@ public class Card {
     @Column(nullable = false)
     private CardType cardType;
 
+    @Column(name = "card_color")
+    private String cardColor;
+
     public String getCardNumber() {
         return cardNumber;
     }
@@ -131,5 +134,13 @@ public class Card {
 
     public void setRnokpp(String rnokpp) {
         this.rnokpp = rnokpp;
+    }
+
+    public String getCardColor() {
+        return cardColor;
+    }
+
+    public void setCardColor(String cardColor) {
+        this.cardColor = cardColor;
     }
 }

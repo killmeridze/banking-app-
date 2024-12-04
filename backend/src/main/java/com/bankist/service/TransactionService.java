@@ -130,6 +130,8 @@ public class TransactionService {
             senderTx.setAmount(-amountToDebit); 
             senderTx.setTransactionDate(new Date());
             senderTx.setTransactionType(TransactionType.TRANSFER);
+            senderTx.setFromCardNumber(fromCardNumber); 
+            senderTx.setToCardNumber(toCardNumber); 
             Transaction savedSenderTx = transactionRepository.save(senderTx);
 
             Transaction recipientTx = new Transaction();
@@ -138,6 +140,8 @@ public class TransactionService {
             recipientTx.setAmount(amountToCredit); 
             recipientTx.setTransactionDate(new Date());
             recipientTx.setTransactionType(TransactionType.TRANSFER);
+            recipientTx.setFromCardNumber(fromCardNumber); 
+            recipientTx.setToCardNumber(toCardNumber);
             Transaction savedRecipientTx = transactionRepository.save(recipientTx);
 
             if (savedSenderTx.getId() == null || savedRecipientTx.getId() == null) {

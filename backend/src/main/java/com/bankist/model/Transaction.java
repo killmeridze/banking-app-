@@ -25,6 +25,12 @@ public class Transaction {
     @Column(nullable = false)
     private Date transactionDate;
 
+    @Column(name = "from_card_number", length = 16)
+    private String fromCardNumber;
+
+    @Column(name = "to_card_number", length = 16)
+    private String toCardNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType transactionType;
@@ -93,5 +99,21 @@ public class Transaction {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public String getFromCardNumber() {
+        return fromCardNumber;
+    }
+
+    public void setFromCardNumber(String fromCardNumber) {
+        this.fromCardNumber = fromCardNumber;
+    }
+
+    public String getToCardNumber() {
+        return toCardNumber;
+    }
+
+    public void setToCardNumber(String toCardNumber) {
+        this.toCardNumber = toCardNumber;
     }
 }
