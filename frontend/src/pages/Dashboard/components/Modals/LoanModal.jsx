@@ -89,12 +89,11 @@ export const LoanModal = ({
       return loan.card.id === card.id && (hasRemainingBalance || loan.isActive);
     }) || [];
 
-  const hasActiveLoansOnOtherCards =
+  const hasAnyActiveLoans =
     loans?.some((loan) => {
       const remainingAmount = loan.totalAmount - loan.paidAmount;
       const hasRemainingBalance = Math.abs(remainingAmount) > 0.1;
-
-      return loan.card.id !== card.id && (hasRemainingBalance || loan.isActive);
+      return hasRemainingBalance || loan.isActive;
     }) || false;
 
   const handleLoanRequest = (e) => {
@@ -182,7 +181,13 @@ export const LoanModal = ({
             placeholder="Введите сумму"
             step="0.01"
             className={error ? styles.error_input : ""}
+            disabled={hasAnyActiveLoans}
           />
+          {hasAnyActiveLoans && (
+            <div className={styles.warning_message}>
+              У вас уже есть активный кредит
+            </div>
+          )}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -200,7 +205,7 @@ export const LoanModal = ({
           <button
             type="submit"
             className={styles.submit_btn}
-            disabled={hasActiveLoansOnOtherCards}
+            disabled={hasAnyActiveLoans}
           >
             Запросить кредит
           </button>
@@ -288,11 +293,6 @@ export const LoanModal = ({
               </div>
             );
           })}
-        </div>
-      )}
-      {hasActiveLoansOnOtherCards && activeLoans.length === 0 && (
-        <div className={styles.warning_message}>
-          У вас есть активный кредит на другой карте
         </div>
       )}
 

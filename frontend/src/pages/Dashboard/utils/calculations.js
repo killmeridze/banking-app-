@@ -39,7 +39,7 @@ export const calculateSummary = (movements, loans, currency, convert) => {
 
   if (loans && loans.length > 0) {
     loans.forEach((loan) => {
-      if (loan.amount > 0) {
+      if (loan.paidAmount < loan.totalAmount) {
         const interestAmount = convert(loan.interestAmount, "USD", currency);
         interests += interestAmount;
       }

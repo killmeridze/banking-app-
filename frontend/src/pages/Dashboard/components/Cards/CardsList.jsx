@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./Cards.module.css";
 import {
   formatCurrency,
@@ -19,19 +19,21 @@ export const CardsList = ({
   onCardSelect,
   onAddCard,
   isLoading,
+  selectedCard,
 }) => {
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCard, setActiveCard] = useState(selectedCard?.id || null);
   const [showAddCardModal, setShowAddCardModal] = useState(false);
 
-  const handleCardClick = (card) => {
-    if (activeCard === card.id) {
-      setActiveCard(null);
-      onCardSelect(null);
-    } else {
-      setActiveCard(card.id);
+  useEffect(() => {
+    setActiveCard(selectedCard?.id || null);
+  }, [selectedCard]);
+
+  const handleCardClick = useCallback(
+    (card) => {
       onCardSelect(card);
-    }
-  };
+    },
+    [onCardSelect]
+  );
 
   return (
     <div className={styles.cards_section}>

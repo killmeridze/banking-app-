@@ -63,6 +63,12 @@ export const Dashboard = () => {
     setActiveTab("overview");
   }, [selectedCard?.id, setActiveTab]);
 
+  useEffect(() => {
+    if (activeTab === null) {
+      setSelectedCard(null);
+    }
+  }, [activeTab]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -73,92 +79,130 @@ export const Dashboard = () => {
       <motion.main
         className={`${styles.content} ${isCentered ? styles.centered : ""}`}
         initial={false}
-        animate={{
-          marginTop: isCentered ? "20vh" : "0",
-          transition: {
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            duration: 0.5,
-          },
-        }}
       >
-        <CardsList
-          cards={userData?.cards || []}
-          onCardSelect={setSelectedCard}
-          onAddCard={handleAddCard}
-          isLoading={loading}
-        />
+        <motion.div
+          className={styles.cards_wrapper}
+          animate={{
+            x: selectedCard ? "-100%" : 0,
+            opacity: selectedCard ? 0 : 1,
+            transition: {
+              type: "spring",
+              stiffness: 80,
+              damping: 20,
+              duration: 0.6,
+            },
+          }}
+        >
+          <CardsList
+            cards={userData?.cards || []}
+            onCardSelect={setSelectedCard}
+            onAddCard={handleAddCard}
+            isLoading={loading}
+          />
+        </motion.div>
 
-        {selectedCard && (
-          <div className={styles.tabs_container}>
-            <TabsNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        <AnimatePresence mode="wait">
+          {selectedCard && (
+            <motion.div
+              className={styles.tabs_container}
+              initial={{ x: "100%" }}
+              animate={{
+                x: 0,
+                transition: {
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 20,
+                  duration: 0.6,
+                },
+              }}
+              exit={{
+                x: "100%",
+                transition: {
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 20,
+                  duration: 0.6,
+                },
+              }}
+            >
+              <TabsNavigation
+                activeTab={activeTab}
+                onTabChange={(tab) => {
+                  if (tab === null) {
+                    setSelectedCard(null);
+                    setActiveTab("overview");
+                  } else {
+                    setActiveTab(tab);
+                  }
+                }}
+              />
 
-            <div className={styles.tab_content}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {activeTab === "overview" && (
-                    <div className={styles.overview_content}>
-                      <CardInfo card={selectedCard} user={userData} />
-                      <Summary
-                        movements={transactions}
-                        loans={
-                          userData?.loans?.filter(
-                            (loan) => loan.card?.id === selectedCard?.id
-                          ) || []
-                        }
+              <div className={styles.tab_content}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {activeTab === "overview" && (
+                      <div className={styles.overview_content}>
+                        <CardInfo card={selectedCard} user={userData} />
+                        <Summary
+                          movements={transactions}
+                          loans={
+                            userData?.loans?.filter(
+                              (loan) => loan.card?.id === selectedCard?.id
+                            ) || []
+                          }
+                          currency={selectedCard.currency}
+                          cardId={selectedCard.id}
+                          cardColor={selectedCard.cardColor}
+                        />
+                      </div>
+                    )}
+
+                    {activeTab === "actions" && (
+                      <div className={styles.action_buttons}>
+                        <button
+                          className={styles.action_btn}
+                          onClick={() => setShowTransferModal(true)}
+                          style={{ "--card-color": selectedCard.cardColor }}
+                        >
+                          Перевести деньги
+                        </button>
+                        <button
+                          className={styles.action_btn}
+                          onClick={() => setShowLoanModal(true)}
+                          style={{ "--card-color": selectedCard.cardColor }}
+                          disabled={selectedCard.cardType !== "CREDIT"}
+                          title={
+                            selectedCard.cardType !== "CREDIT"
+                              ? "Только кредитные карты могут иметь кредиты."
+                              : "Запросить кредит"
+                          }
+                        >
+                          Запросить кредит
+                        </button>
+                      </div>
+                    )}
+
+                    {activeTab === "transactions" && (
+                      <TransactionsList
+                        transactions={transactions}
                         currency={selectedCard.currency}
-                        cardId={selectedCard.id}
+                        sortOrder={sortOrder}
+                        onSort={handleSort}
                         cardColor={selectedCard.cardColor}
                       />
-                    </div>
-                  )}
-
-                  {activeTab === "actions" && (
-                    <div className={styles.action_buttons}>
-                      <button
-                        className={styles.action_btn}
-                        onClick={() => setShowTransferModal(true)}
-                        style={{ "--card-color": selectedCard.cardColor }}
-                      >
-                        Перевести деньги
-                      </button>
-                      <button
-                        className={styles.action_btn}
-                        onClick={() => setShowLoanModal(true)}
-                        style={{ "--card-color": selectedCard.cardColor }}
-                        disabled={selectedCard.cardType !== "CREDIT"}
-                        title={
-                          selectedCard.cardType !== "CREDIT"
-                            ? "Только кредитные карты могут иметь кредиты."
-                            : "Запросить кредит"
-                        }
-                      >
-                        Запросить кредит
-                      </button>
-                    </div>
-                  )}
-
-                  {activeTab === "transactions" && (
-                    <TransactionsList
-                      transactions={transactions}
-                      currency={selectedCard.currency}
-                      sortOrder={sortOrder}
-                      onSort={handleSort}
-                      cardColor={selectedCard.cardColor}
-                    />
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-        )}
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.main>
 
       {showTransferModal && (

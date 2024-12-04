@@ -55,19 +55,25 @@
 
 .details_btn {
   font-size: 1.4rem;
-  color: var(--color-primary);
-  background: transparent;
-  border: none;
+  color: var(--black);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   transition: all 0.3s;
   font-family: "Montserrat", sans-serif;
   line-height: 2.4rem;
+  backdrop-filter: blur(4px);
 }
 
 .details_btn:hover {
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.details_btn:active {
+  transform: translateY(0);
 }
 
 .main_info {

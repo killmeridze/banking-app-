@@ -75,3 +75,29 @@
   height: 2px;
   background: var(--color-primary);
 }
+
+.back_btn {
+  background: transparent;
+  border: none;
+  color: var(--black);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+  position: absolute;
+  left: 1.5rem;
+}
+
+.back_btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tabs_btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
