@@ -33,10 +33,9 @@ export const useRegister = () => {
 
     try {
       if (formData.username.length < 4) {
-        setFormErrors((prev) => ({
-          ...prev,
+        setFormErrors({
           username: VALIDATION_MESSAGES.USERNAME_SHORT,
-        }));
+        });
         return;
       }
 
@@ -46,42 +45,30 @@ export const useRegister = () => {
         return;
       }
 
-      if (formData.password !== formData.confirmPassword) {
-        setFormErrors({
-          confirmPassword: VALIDATION_MESSAGES.PASSWORDS_DONT_MATCH,
-        });
-        return;
-      }
-
-      const exists = await api.users.checkExists(
-        formData.username,
-        formData.email
-      );
-
-      if (exists.usernameExists || exists.emailExists) {
-        setFormErrors({
-          ...(exists.usernameExists && {
-            username: VALIDATION_MESSAGES.USER_EXISTS,
-          }),
-          ...(exists.emailExists && {
-            email: VALIDATION_MESSAGES.EMAIL_EXISTS,
-          }),
-        });
-        return;
-      }
-
-      const response = await api.auth.register(formData);
-
-      if (response.token) {
-        AuthTokenService.setToken(response.token);
-        navigate("/login", {
-          state: { message: "Регистрация успешна! Теперь вы можете войти." },
-        });
-      }
-    } catch (error) {
-      setFormErrors({
-        submit: error.message || VALIDATION_MESSAGES.REGISTRATION_ERROR,
+      await api.auth.register(formData);
+      navigate("/login", {
+        state: { message: "Регистрация успешна! Теперь вы можете войти." },
       });
+    } catch (error) {
+      const errorMessage =
+        error.message ||
+        error.data?.message ||
+        error.data?.error ||
+        VALIDATION_MESSAGES.REGISTRATION_ERROR;
+
+      if (errorMessage.includes("именем")) {
+        setFormErrors({
+          username: errorMessage,
+        });
+      } else if (errorMessage.includes("email")) {
+        setFormErrors({
+          email: errorMessage,
+        });
+      } else {
+        setFormErrors({
+          submit: errorMessage,
+        });
+      }
     } finally {
       setIsLoading(false);
     }

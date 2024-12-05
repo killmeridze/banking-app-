@@ -27,11 +27,14 @@ export const useDashboard = () => {
       const data = await api.users.getProfile(userId);
       const userLoans = await api.loans.getUserLoans(userId);
 
-      setUserData({
+      const updatedData = {
         ...data,
         loans: userLoans,
-      });
+      };
+
+      setUserData(updatedData);
       setLoans(userLoans);
+      return updatedData;
     } catch (error) {
       setError(errorHandler.handleApiError(error));
     } finally {
@@ -81,7 +84,17 @@ export const useDashboard = () => {
   const handleTransfer = async (transferData) => {
     try {
       await api.transfer(transferData);
-      await fetchUserData();
+      const userData = await fetchUserData();
+
+      if (selectedCard && userData.cards) {
+        const updatedCard = userData.cards.find(
+          (card) => card.id === selectedCard.id
+        );
+        if (updatedCard) {
+          setSelectedCard(updatedCard);
+        }
+      }
+
       if (selectedCard) {
         await fetchTransactions(selectedCard.id);
       }
@@ -101,7 +114,17 @@ export const useDashboard = () => {
       }
 
       await api.loans.request(userId, cardId, amount);
-      await fetchUserData();
+      const userData = await fetchUserData();
+
+      if (selectedCard && userData.cards) {
+        const updatedCard = userData.cards.find(
+          (card) => card.id === selectedCard.id
+        );
+        if (updatedCard) {
+          setSelectedCard(updatedCard);
+        }
+      }
+
       if (selectedCard) {
         await fetchTransactions(selectedCard.id);
       }
@@ -113,7 +136,16 @@ export const useDashboard = () => {
   const handleLoanRepayment = async (loanId, amount) => {
     try {
       await api.loans.repay(loanId, amount);
-      await fetchUserData();
+      const userData = await fetchUserData();
+
+      if (selectedCard && userData.cards) {
+        const updatedCard = userData.cards.find(
+          (card) => card.id === selectedCard.id
+        );
+        if (updatedCard) {
+          setSelectedCard(updatedCard);
+        }
+      }
       if (selectedCard) {
         await fetchTransactions(selectedCard.id);
       }

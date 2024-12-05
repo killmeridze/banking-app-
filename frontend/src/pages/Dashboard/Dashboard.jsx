@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimate } from "framer-motion";
 import { Header } from "./components/Header/Header";
 import { CardsList } from "./components/Cards/CardsList";
 import { TransferModal } from "./components/Modals/TransferModal";
@@ -39,10 +39,48 @@ export const Dashboard = () => {
     setSelectedCard,
   } = useDashboard();
 
+  const [cardsAnimation, animateCards] = useAnimate();
+  const [cardDetailsAnimation, animateCardDetails] = useAnimate();
+
   useLogoutTimer(() => {
     handleLogout();
     navigate("/login");
   });
+
+  const isCardSelected = useMemo(() => !!selectedCard, [selectedCard]);
+
+  const cardSelectHandler = useCallback(
+    (card) => {
+      setSelectedCard(card);
+      animateCards(
+        cardsAnimation.current,
+        {
+          x: "-100%",
+          opacity: 0,
+        },
+        {
+          type: "spring",
+          stiffness: 80,
+          damping: 20,
+          duration: 0.6,
+        }
+      );
+      animateCardDetails(
+        cardDetailsAnimation.current,
+        {
+          x: 0,
+          opacity: 1,
+        },
+        {
+          type: "spring",
+          stiffness: 80,
+          damping: 20,
+          duration: 0.6,
+        }
+      );
+    },
+    [setSelectedCard, animateCardDetails, animateCards]
+  );
 
   useEffect(() => {
     const userId = sessionStorage.getItem("currentUserId");
@@ -82,126 +120,129 @@ export const Dashboard = () => {
       >
         <motion.div
           className={styles.cards_wrapper}
-          animate={{
-            x: selectedCard ? "-100%" : 0,
-            opacity: selectedCard ? 0 : 1,
-            transition: {
-              type: "spring",
-              stiffness: 80,
-              damping: 20,
-              duration: 0.6,
-            },
-          }}
+          ref={cardsAnimation}
+          initial={isCardSelected ? { x: "-100%" } : { x: 0 }}
         >
           <CardsList
             cards={userData?.cards || []}
-            onCardSelect={setSelectedCard}
+            onCardSelect={cardSelectHandler}
             onAddCard={handleAddCard}
             isLoading={loading}
           />
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {selectedCard && (
-            <motion.div
-              className={styles.tabs_container}
-              initial={{ x: "100%" }}
-              animate={{
-                x: 0,
-                transition: {
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 20,
-                  duration: 0.6,
-                },
-              }}
-              exit={{
-                x: "100%",
-                transition: {
-                  type: "spring",
-                  stiffness: 80,
-                  damping: 20,
-                  duration: 0.6,
-                },
-              }}
-            >
-              <TabsNavigation
-                activeTab={activeTab}
-                onTabChange={(tab) => {
-                  if (tab === null) {
-                    setSelectedCard(null);
-                    setActiveTab("overview");
-                  } else {
-                    setActiveTab(tab);
-                  }
-                }}
-              />
+          <motion.div
+            className={styles.tabs_container}
+            ref={cardDetailsAnimation}
+            initial={!isCardSelected ? { x: "-100%" } : { x: 0 }}
+          >
+            {isCardSelected && (
+              <>
+                <TabsNavigation
+                  activeTab={activeTab}
+                  onTabChange={(tab) => {
+                    if (tab === null) {
+                      setSelectedCard(null);
+                      setActiveTab("overview");
+                      animateCards(
+                        cardsAnimation.current,
+                        {
+                          x: 0,
+                          opacity: 1,
+                        },
+                        {
+                          type: "spring",
+                          stiffness: 80,
+                          damping: 20,
+                          duration: 0.6,
+                        }
+                      );
+                      animateCardDetails(
+                        cardDetailsAnimation.current,
+                        {
+                          x: "100%",
+                          opacity: 0,
+                        },
+                        {
+                          type: "spring",
+                          stiffness: 80,
+                          damping: 20,
+                          duration: 0.6,
+                        }
+                      );
+                    } else {
+                      setActiveTab(tab);
+                    }
+                  }}
+                />
 
-              <div className={styles.tab_content}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {activeTab === "overview" && (
-                      <div className={styles.overview_content}>
-                        <CardInfo card={selectedCard} user={userData} />
-                        <Summary
-                          movements={transactions}
-                          loans={
-                            userData?.loans?.filter(
-                              (loan) => loan.card?.id === selectedCard?.id
-                            ) || []
-                          }
+                <div className={styles.tab_content}>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTab}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {activeTab === "overview" && (
+                        <div className={styles.overview_content}>
+                          <CardInfo card={selectedCard} user={userData} />
+                          <Summary
+                            movements={transactions}
+                            loans={
+                              userData?.loans?.filter(
+                                (loan) => loan.card?.id === selectedCard?.id
+                              ) || []
+                            }
+                            currency={selectedCard.currency}
+                            cardId={selectedCard.id}
+                            cardColor={selectedCard.cardColor}
+                          />
+                        </div>
+                      )}
+
+                      {activeTab === "actions" && (
+                        <div className={styles.action_buttons}>
+                          <button
+                            className={styles.action_btn}
+                            onClick={() => setShowTransferModal(true)}
+                            style={{ "--card-color": selectedCard.cardColor }}
+                          >
+                            Перевести деньги
+                          </button>
+                          <button
+                            className={styles.action_btn}
+                            onClick={() => setShowLoanModal(true)}
+                            style={{ "--card-color": selectedCard.cardColor }}
+                            disabled={selectedCard.cardType !== "CREDIT"}
+                            title={
+                              selectedCard.cardType !== "CREDIT"
+                                ? "Только кредитные карты могут иметь кредиты."
+                                : "Запросить кредит"
+                            }
+                          >
+                            Запросить кредит
+                          </button>
+                        </div>
+                      )}
+
+                      {activeTab === "transactions" && (
+                        <TransactionsList
+                          transactions={transactions}
                           currency={selectedCard.currency}
-                          cardId={selectedCard.id}
+                          sortOrder={sortOrder}
+                          onSort={handleSort}
                           cardColor={selectedCard.cardColor}
                         />
-                      </div>
-                    )}
-
-                    {activeTab === "actions" && (
-                      <div className={styles.action_buttons}>
-                        <button
-                          className={styles.action_btn}
-                          onClick={() => setShowTransferModal(true)}
-                          style={{ "--card-color": selectedCard.cardColor }}
-                        >
-                          Перевести деньги
-                        </button>
-                        <button
-                          className={styles.action_btn}
-                          onClick={() => setShowLoanModal(true)}
-                          style={{ "--card-color": selectedCard.cardColor }}
-                          disabled={selectedCard.cardType !== "CREDIT"}
-                          title={
-                            selectedCard.cardType !== "CREDIT"
-                              ? "Только кредитные карты могут иметь кредиты."
-                              : "Запросить кредит"
-                          }
-                        >
-                          Запросить кредит
-                        </button>
-                      </div>
-                    )}
-
-                    {activeTab === "transactions" && (
-                      <TransactionsList
-                        transactions={transactions}
-                        currency={selectedCard.currency}
-                        sortOrder={sortOrder}
-                        onSort={handleSort}
-                        cardColor={selectedCard.cardColor}
-                      />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          )}
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </>
+            )}
+          </motion.div>
         </AnimatePresence>
       </motion.main>
 
