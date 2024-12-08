@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bankist.dto.ErrorResponse;
 import com.bankist.dto.RegisterRequest;
+import com.bankist.dto.RegisterResponse;
 import com.bankist.exception.InvalidPasswordException;
 import com.bankist.exception.PasswordMismatchException;
 import com.bankist.exception.UserAlreadyExistsException;
@@ -33,14 +34,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            return ResponseEntity.ok(userService.register(request));
+            RegisterResponse response = userService.register(request);
+            return ResponseEntity.ok(response);
         } catch (UserAlreadyExistsException | PasswordMismatchException e) {
             return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(e.getMessage()));
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {

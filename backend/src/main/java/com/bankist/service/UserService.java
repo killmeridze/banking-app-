@@ -1,5 +1,6 @@
 package com.bankist.service;
 
+import com.bankist.dto.RegisterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -82,7 +83,7 @@ public class UserService {
         }
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
         UserExistsResponse existsCheck = checkUserExists(request.getUsername(), request.getEmail());
         
         if (existsCheck.isUsernameExists() || existsCheck.isEmailExists()) {
@@ -102,9 +103,9 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         
-        return new AuthResponse(jwtProvider.generateToken(user.getUsername()));
+        return new RegisterResponse("Registration successful", savedUser.getId());
     }
 
     public UserExistsResponse checkUserExists(String username, String email) {

@@ -42,7 +42,6 @@ public class SecurityConfig {
                 return config;
             }))
             .authorizeHttpRequests(auth -> auth
-                // Static resources first
                 .requestMatchers(
                     "/",
                     "/index.html",
@@ -50,7 +49,6 @@ public class SecurityConfig {
                     "/favicon.ico",
                     "/manifest.json"
                 ).permitAll()
-                // API endpoints
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/users/exists").permitAll()
                 .requestMatchers("/api/users/**").authenticated()
